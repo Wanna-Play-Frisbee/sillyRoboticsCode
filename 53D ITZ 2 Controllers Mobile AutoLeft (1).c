@@ -165,7 +165,7 @@ task autonomous()
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-task SG1()
+task SG1 ()
 		{
 			//Stationary Goal Cone 1
 		if(vexRT [Btn7LXmtr2]==1) {
@@ -191,7 +191,7 @@ task SG1()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task SG2()
+task SG2 ()
 		{
 		  //Stationary Goal Cone 2
 		if(vexRT [Btn7UXmtr2]==1) {
@@ -217,7 +217,7 @@ task SG2()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task SG3()
+task SG3 ()
 		{
 		  //Stationary Goal Cone 3
 		if(vexRT [Btn7RXmtr2]==1) {
@@ -243,7 +243,7 @@ task SG3()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task SG4()
+task SG4 ()
 		{
 		  //Stationary Goal Cone 4
 		if(vexRT [Btn7DXmtr2]==1) {
@@ -269,7 +269,7 @@ task SG4()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task MG5()
+task MG5 ()
 		{
 			//Cone Stacking up to 5
 			if(vexRT [Btn8LXmtr2]==1) {
@@ -284,7 +284,7 @@ task MG5()
 			motor [ClawOC] = 0;
 		  }
 		}
-task MG6()
+task MG6 ()
 		{
 		  // Stacking Cone 6
 			if(vexRT [Btn8UXmtr2]==1) {
@@ -310,7 +310,7 @@ task MG6()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task MG7()
+task MG7 ()
 		{
 		  // Stacking Cone 7
 			if(vexRT [Btn8RXmtr2]==1) {
@@ -336,7 +336,7 @@ task MG7()
 			motor [RightLiftUD] = 0;
 		  }
 		}
-task MG8()
+task MG8 ()
 		{
 		  //Stacking Cone 8
 			if(vexRT [Btn8DXmtr2]==1) {
