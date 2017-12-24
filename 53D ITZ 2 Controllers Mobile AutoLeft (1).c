@@ -364,14 +364,14 @@ task MG8 ()
 		}
 task usercontrol()
 {
-startTask(SG1);
-startTask(SG2);
-startTask(SG3);
-startTask(SG4);
-startTask(MG5);
-startTask(MG6);
-startTask(MG7);
-startTask(MG8);
+StartTask(SG1);
+StartTask(SG2);
+StartTask(SG3);
+StartTask(SG4);
+StartTask(MG5);
+StartTask(MG6);
+StartTask(MG7);
+StartTask(MG8);
 //Driver Control --- Controller 1
   while (true)
   {
