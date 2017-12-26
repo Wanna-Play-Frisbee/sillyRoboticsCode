@@ -686,16 +686,6 @@ task usercontrol()
 			motor [LeftLiftUD]= 0;
 			motor [RightLiftUD]= 0;
 	}
-			//Stationary Goal
-		if(vexRT [Btn7DXmtr2]==1) {
-			int limit = getMotorEncoder(LeftLiftUD);
-		while (getMotorEncoder(LeftLiftUD)>-1159+limit && getMotorEncoder(LeftLiftUD)>-4326){
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-}
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			}
 		//Rotate --- Controller 2
 	if(abs(vexRT[Ch2Xmtr2]) > threshold)
 			Y1 = vexRT[Ch2Xmtr2] * (4.0/4.0);
