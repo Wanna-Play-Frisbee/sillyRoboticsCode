@@ -44,7 +44,10 @@ void pre_auton()
 bStopTasksBetweenModes = true;
 string mainBattery, backupBattery;
 bLCDBacklight = true;
-while(true)
+
+int x = 0, y = 25;
+	
+while(x<y)
  {
  clearLCDLine(0);
  clearLCDLine(1);
@@ -76,6 +79,7 @@ sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');    //Build th
 displayNextLCDString(backupBattery);
 		}
 		wait1Msec(200);
+	x++;
 	}
 }
 
