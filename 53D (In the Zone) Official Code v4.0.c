@@ -44,10 +44,7 @@ void pre_auton()
 bStopTasksBetweenModes = true;
 string mainBattery, backupBattery;
 bLCDBacklight = true;
-
-int x = 0, y = 25;
-	
-while(x<y)
+while(true)
  {
  clearLCDLine(0);
  clearLCDLine(1);
@@ -79,7 +76,6 @@ sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');    //Build th
 displayNextLCDString(backupBattery);
 		}
 		wait1Msec(200);
-	x++;
 	}
 }
 
@@ -321,8 +317,214 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
+task (SG1)
+	{
+				//Stationary Goal Cone 1
+		if(vexRT [Btn7LXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (2500);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (800);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (2200);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (SG2)
+			{
+		  //Stationary Goal Cone 2
+		if(vexRT [Btn7UXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (3500);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (900);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (2800);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (SG3)
+			{
+		  //Stationary Goal Cone 3
+		if(vexRT [Btn7RXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (4900);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (800);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (4200);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (SG4)
+			{
+		  //Stationary Goal Cone 4
+		if(vexRT [Btn7DXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (6900);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (800);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (5400);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (MG5)
+			{
+			//Cone Stacking up to 5
+			if(vexRT [Btn8LXmtr2]==1) {
+			motor [ClawOC] = -127;
+			delay (100);
+			motor [LiftClawRotate] = -127;
+			delay (2600);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2300);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+		  }
+		  }
+task (MG6)
+			{
+		  // Stacking Cone 6
+		if(vexRT [Btn8UXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (900);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2500);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (1900);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (1000);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (MG7)
+			{
+		  // Stacking Cone 7
+			if(vexRT [Btn8RXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (2200);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (800);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (1900);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		  }
+task (MG8)
+			{
+		  //Stacking Cone 8
+			if(vexRT [Btn8DXmtr2]==1) {
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay (3500);
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2000);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (1100);
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = -127;
+			delay (2900);
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+		  }
+		}
 task usercontrol()
 {
+	startTask (SG1);
+	startTask (SG2);
+	startTask (SG3);
+	startTask (SG4);
+	startTask (MG5);
+	startTask (MG6);
+	startTask (MG7);
+	startTask (MG8);
+	
 //Driver Control --- Controller 1
   while (true)
   {
@@ -445,179 +647,6 @@ task usercontrol()
 //		motor[BackRightDrive] = 0;
 //	}
 ///////////////////////////////////////////////////////////////////////////////////////
-				//Stationary Goal Cone 1
-		if(vexRT [Btn7LXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (2500);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2100);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (800);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (2200);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-		  //Stationary Goal Cone 2
-		if(vexRT [Btn7UXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (3500);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2100);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (900);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (2800);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-		  //Stationary Goal Cone 3
-		if(vexRT [Btn7RXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (4900);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2100);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (800);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (4200);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-		  //Stationary Goal Cone 4
-		if(vexRT [Btn7DXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (6900);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2100);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (800);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (5400);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-			//Cone Stacking up to 5
-			if(vexRT [Btn8LXmtr2]==1) {
-			motor [ClawOC] = -127;
-			delay (100);
-			motor [LiftClawRotate] = -127;
-			delay (2600);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (2300);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-		  }
-		  // Stacking Cone 6
-		if(vexRT [Btn8UXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (900);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2500);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (1900);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (1000);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-		  // Stacking Cone 7
-			if(vexRT [Btn8RXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (2200);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2100);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (800);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (1900);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
-		  //Stacking Cone 8
-			if(vexRT [Btn8DXmtr2]==1) {
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (3500);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = -127;
-			delay (2000);
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 127;
-			delay (1100);
-			motor [LiftClawRotate] = 0;
-			motor [LeftLiftUD] = 127;
-			motor [RightLiftUD] = -127;
-			delay (2900);
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 0;
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-		  }
 //Lift Control --- Controller 2
 		//Up&Down
 		if(vexRT [Btn5UXmtr2]==1){
