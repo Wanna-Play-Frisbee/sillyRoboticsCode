@@ -320,7 +320,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 task SG1()
 	{
 				//Stationary Goal Cone 1
-		if(vexRT [Btn7LXmtr2]==1) {
+		
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -341,7 +341,7 @@ task SG1()
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-		  }
+		  
 		  }
 task SG2()
 			{
@@ -516,7 +516,7 @@ task MG8()
 		}
 task usercontrol()
 {
-	startTask (SG1);
+	
 	startTask (SG2);
 	startTask (SG3);
 	startTask (SG4);
@@ -528,6 +528,7 @@ task usercontrol()
 //Driver Control --- Controller 1
   while (true)
   {
+	if(vexRT [Btn7LXmtr2]==1) {startTask (SG1);}
 	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5, o=0;
 	while (1==1)
 	{
