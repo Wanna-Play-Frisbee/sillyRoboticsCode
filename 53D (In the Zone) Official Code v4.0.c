@@ -318,7 +318,9 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 task SG1()
-	{
+			{
+		  while (true)
+  		{
 				//Stationary Goal Cone 1
 		if(vexRT [Btn7LXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -343,8 +345,11 @@ task SG1()
 			motor [RightLiftUD] = 0;
 		  }
 		}
+	}
 task SG2()
 			{
+			while (true)
+  		{
 		  //Stationary Goal Cone 2
 		if(vexRT [Btn7UXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -369,8 +374,11 @@ task SG2()
 			motor [RightLiftUD] = 0;
 		  }
 		  }
+		}
 task SG3()
 			{
+			while (true)
+  		{
 		  //Stationary Goal Cone 3
 		if(vexRT [Btn7RXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -395,8 +403,11 @@ task SG3()
 			motor [RightLiftUD] = 0;
 		  }
 		  }
+		}
 task SG4()
 			{
+			while (true)
+  		{
 		  //Stationary Goal Cone 4
 		if(vexRT [Btn7DXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -421,8 +432,11 @@ task SG4()
 			motor [RightLiftUD] = 0;
 		  }
 		  }
+		}
 task MG5()
 			{
+			while (true)
+  		{
 			//Cone Stacking up to 5
 			if(vexRT [Btn8LXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -436,8 +450,11 @@ task MG5()
 			motor [ClawOC] = 0;
 		  }
 		  }
+		}
 task MG6()
 			{
+			while (true)
+  		{
 		  // Stacking Cone 6
 		if(vexRT [Btn8UXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -462,8 +479,11 @@ task MG6()
 			motor [RightLiftUD] = 0;
 		  }
 		  }
+		}
 task MG7()
 			{
+			while (true)
+  		{
 		  // Stacking Cone 7
 			if(vexRT [Btn8RXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -488,8 +508,11 @@ task MG7()
 			motor [RightLiftUD] = 0;
 		  }
 		  }
+		}
 task MG8()
 			{
+			while (true)
+  		{
 		  //Stacking Cone 8
 			if(vexRT [Btn8DXmtr2]==1) {
 			motor [ClawOC] = -127;
@@ -514,6 +537,7 @@ task MG8()
 			motor [RightLiftUD] = 0;
 		  }
 		}
+	}
 task usercontrol()
 {
 	startTask(SG1);
