@@ -524,7 +524,7 @@ task usercontrol()
   while (true)
   {
 
-	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5, o=0;
+	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, R1 = 0, threshold = 5, o=0;
 	while (1==1)
 	{
 					if(vexRT [Btn7LXmtr2]==1) {
@@ -622,14 +622,15 @@ task usercontrol()
 		if(abs(vexRT[Ch2Xmtr2]) > threshold)
 		{
 				RotatingClawLift = true;
-			Y1 = vexRT[Ch2Xmtr2] * (4.0/4.0);
+			R1 = vexRT[Ch2Xmtr2] * (4.0/4.0);
 		}
 		else if(RotatingClawLift == true)
 		{
 			RotatingClawLift = false;
- 				Y1 = 0;
-	motor [LiftClawRotate]=-Y1;
+ 				R1 = 0;
 		}
+		motor [LiftClawRotate]=-R1;
+		
 //Claw Control --- Controller 2
 		//Open&Close
 		bool ClawUse;
