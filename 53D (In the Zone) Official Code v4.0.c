@@ -622,14 +622,13 @@ task usercontrol()
 		if(abs(vexRT[Ch2Xmtr2]) > threshold)
 		{
 				RotatingClawLift = true;
-			R1 = vexRT[Ch2Xmtr2] * (4.0/4.0);
+			motor [LiftClawRotate]=vexRT[Ch2Xmtr2] * -(4.0/4.0);
 		}
 		else if(RotatingClawLift == true)
 		{
 			RotatingClawLift = false;
- 				R1 = 0;
+ 			motor [LiftClawRotate]= 0;
 		}
-		motor [LiftClawRotate]=-R1;
 		
 //Claw Control --- Controller 2
 		//Open&Close
