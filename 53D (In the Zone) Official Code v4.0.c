@@ -42,6 +42,7 @@
 
 void pre_auton()
 {
+//int kDefaultTaskPriority = 255;
 bStopTasksBetweenModes = true;
 /* string mainBattery, backupBattery;
 bLCDBacklight = true;
@@ -99,7 +100,7 @@ if(SensorValue[AutoSelect] <= 400) //MGL
 {
 		motor [LiftClawRotate]=95;
 		motor [ClawOC]=-90;
-		delay(900);
+		delay(1200);
 		motor [LiftClawRotate]=0;
 		delay(500);
 	//Mobile Lift Down and Drive
@@ -275,39 +276,82 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGR
 		motor[BackRightDrive] = 0;
     }
 if(SensorValue[AutoSelect] >= 1400) //SGC
-		{
-			motor [FrontLeftDrive] = 72;
+		{//go forward a little
+			motor [ClawOC] = -127;
+			motor [FrontLeftDrive] = 127;
 			motor [FrontRightDrive] = -127;
-			motor [BackLeftDrive] = 72;
+			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = -127;
-			delay(300);
-			motor[MobileLiftLeft] = 0;
-			motor[MobileLiftRight]= 0;
+			delay(150);
+			//stop going forward
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay(10);
+			//stop rotating, go up
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = 127;
+			delay(1920);
+			//stop u/d lift
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			delay(10);
+			//rotate lifty boi
+			motor [LiftClawRotate] = 127;
+			delay(1100);
+			//go forward, unto thine goal!
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+			delay(950);
+			//stop going forward
 			motor[FrontLeftDrive] = 0;
 			motor[FrontRightDrive] = 0;
 			motor[BackLeftDrive] = 0;
 			motor[BackRightDrive] = 0;
-			delay(100);
-			motor [ClawOC] = -127;
-			motor [LeftLiftUD] = -127;
-			motor [RightLiftUD] = 127;
-			delay (2500);
-			motor [LeftLiftUD] = 0;
-			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
-			motor [LiftClawRotate] = 127;
-			delay (500);
-			motor [ClawOC] = 127;
+			delay(10);
+			//put the cone on that boi
 			motor [LiftClawRotate] = -127;
-			delay (500);
+			delay(1800);
+			//stoppy boiz
 			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			delay(10);
+			//open claw
+			motor [ClawOC] = 127;
+			delay(200);
+			//rotate awayyy
+			motor [LiftClawRotate] = 127;
+			delay(1000);
+			//go baaaaack
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = 127;
+			delay(690);
+			//stop going baaaaaaaack
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay(10);
+			//put it downnnnn
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
-			delay (2200);
+			delay (1920);
+			//stop them motory bois
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
+			motor[FrontLeftDrive] = 0;
+			motor[FrontRightDrive] = 0;
+			motor[BackLeftDrive] = 0;
+			motor[BackRightDrive] = 0;
+
 		}
 }
 //////////////////////////////////////////////////////////////////////////////////////
@@ -519,6 +563,8 @@ task MG8()
 	}
 task usercontrol()
 {
+	//int kLowPriority = 1;
+	//word nSchedulePriority = kLowPriority;
   while (true)
   {
 
@@ -526,28 +572,28 @@ task usercontrol()
 	while (1==1)
 	{
 					if(vexRT [Btn7LXmtr2]==1) {
-			startTask(SG1);
+			startTask(SG1, 255);
 					}
 					if(vexRT [Btn7UXmtr2]==1) {
-			startTask(SG2);
+			startTask(SG2, 255);
 					}
 					if(vexRT [Btn7RXmtr2]==1) {
-			startTask(SG3);
+			startTask(SG3, 255);
 					}
 					if(vexRT [Btn7DXmtr2]==1) {
-			startTask(SG4);
+			startTask(SG4, 255);
 					}
 					if(vexRT [Btn8LXmtr2]==1) {
-			startTask(MG5);
+			startTask(MG5, 255);
 					}
 					if(vexRT [Btn8UXmtr2]==1) {
-			startTask(MG6);
+			startTask(MG6, 255);
 					}
 					if(vexRT [Btn8RXmtr2]==1) {
-			startTask(MG7);
+			startTask(MG7, 255);
 					}
 					if(vexRT [Btn8DXmtr2]==1) {
-			startTask(MG8);
+			startTask(MG8, 255);
 					}
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
@@ -568,10 +614,10 @@ task usercontrol()
 			X2 = vexRT[Ch4];
 		else
 			X2 = 0;
-   	motor[FrontLeftDrive] = Y2*(7.0/8.0);
-		motor[FrontRightDrive] = -Y1*(7.0/8.0);
-		motor[BackLeftDrive] = Y2*(7.0/8.0);
-		motor[BackRightDrive] = -Y1*(7.0/8.0);
+   	motor[FrontLeftDrive] = Y2/***(7.0/8.0)**/;
+		motor[FrontRightDrive] = -Y1;
+		motor[BackLeftDrive] = Y2;
+		motor[BackRightDrive] = -Y1;
 //Lift Control --- Controller 2
 		//Up&Down
 		bool VertLiftUse;
@@ -598,7 +644,7 @@ task usercontrol()
 		if(abs(vexRT[Ch2Xmtr2]) > threshold)
 		{
 				RotatingClawUse = true;
-			motor [LiftClawRotate]=vexRT[Ch2Xmtr2]*-(4.0/4.0);
+			motor [LiftClawRotate]=-vexRT[Ch2Xmtr2];
 		}
 		else if(RotatingClawUse == true)
 		{
