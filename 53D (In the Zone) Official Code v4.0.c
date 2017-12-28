@@ -688,7 +688,7 @@ displayNextLCDString(backupBattery);
 		}
 		else if(ClawUse == true)
 			{
-							ClawUse = false;
+			ClawUse = false;
 			motor [ClawOC]=0;
 		}
 
