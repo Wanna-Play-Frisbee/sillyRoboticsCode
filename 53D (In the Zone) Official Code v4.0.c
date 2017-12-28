@@ -371,7 +371,7 @@ task SG2()
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 
-			EndTimeSlice();
+		EndTimeSlice();
 		}
 task SG3()
 			{
@@ -429,7 +429,6 @@ task MG5()
 			{
 			//Cone Stacking up to 5
 			motor [ClawOC] = -127;
-			delay (100);
 			motor [LiftClawRotate] = -127;
 			delay (2600);
 			motor [ClawOC] = 127;
@@ -595,18 +594,17 @@ task usercontrol()
 	}
 
 		//Rotate --- Controller 2
-		bool RotatingClawLift;
+		bool RotatingClawUse;
 		if(abs(vexRT[Ch2Xmtr2]) > threshold)
 		{
-				RotatingClawLift = true;
-			motor [LiftClawRotate]=vexRT[Ch2Xmtr2] * -(4.0/4.0);
+				RotatingClawUse = true;
+			motor [LiftClawRotate]=vexRT[Ch2Xmtr2]*-(4.0/4.0);
 		}
-		else if(RotatingClawLift == true)
+		else if(RotatingClawUse == true)
 		{
-			RotatingClawLift = false;
+			RotatingClawUse = false;
  			motor [LiftClawRotate]= 0;
 		}
-
 //Claw Control --- Controller 2
 		//Open&Close
 		bool ClawUse;
