@@ -326,22 +326,25 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*---------------------------------------------------------------------------*/
 task SG1() //Stationary Goal Cone 1
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (2500);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-			motor [ClawOC] = -127;
 			motor [LiftClawRotate] = -127;
 			delay (2100);
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (800);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (2200);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -351,10 +354,12 @@ task SG1() //Stationary Goal Cone 1
 	}
 task SG2() //Stationary Goal Cone 2
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (3500);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -363,10 +368,12 @@ task SG2() //Stationary Goal Cone 2
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (900);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (2800);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -376,10 +383,12 @@ task SG2() //Stationary Goal Cone 2
 		}
 task SG3() //Stationary Goal Cone 3
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (4900);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -388,10 +397,12 @@ task SG3() //Stationary Goal Cone 3
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (800);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (4200);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -401,10 +412,12 @@ task SG3() //Stationary Goal Cone 3
 		}
 task SG4() //Stationary Goal Cone 4
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (6900);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -413,10 +426,12 @@ task SG4() //Stationary Goal Cone 4
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (800);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (5400);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -426,12 +441,15 @@ task SG4() //Stationary Goal Cone 4
 		}
 task MG5() //Cone Stacking up to 5
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LiftClawRotate] = -127;
 			delay (2600);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (2300);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 
@@ -439,10 +457,12 @@ task MG5() //Cone Stacking up to 5
 		}
 task MG6() // Stacking Cone 6
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (900);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -451,10 +471,12 @@ task MG6() // Stacking Cone 6
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (1900);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (1000);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -464,10 +486,12 @@ task MG6() // Stacking Cone 6
 		}
 task MG7() // Stacking Cone 7
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (2200);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -476,10 +500,12 @@ task MG7() // Stacking Cone 7
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (800);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (1900);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -489,10 +515,12 @@ task MG7() // Stacking Cone 7
 		}
 task MG8() // Stacking Cone 8
 			{
+			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay (3500);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			motor [ClawOC] = -127;
@@ -501,10 +529,12 @@ task MG8() // Stacking Cone 8
 			motor [ClawOC] = 127;
 			motor [LiftClawRotate] = 127;
 			delay (1100);
+			//returns the bot's limbs to starting position
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (2900);
+			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -556,7 +586,7 @@ displayNextLCDString(mainBattery);
 
 //Display the Backup battery voltage
 displayLCDString(1, 0, "Backup: ");
-sprintf(backupBattery, "%1.2f%c", battery2Level/1000.0, 'V');    //Build the Value to be Displayed
+sprintf(backupBattery, "%1.2f%c", battery2Level, 'V');    //Build the Value to be Displayed
 displayNextLCDString(backupBattery);
 		}
 		wait1Msec(200);
