@@ -520,7 +520,6 @@ task MG8()
 	}
 task usercontrol()
 {
-//Driver Control --- Controller 1
   while (true)
   {
 
@@ -551,47 +550,25 @@ task usercontrol()
 					if(vexRT [Btn8DXmtr2]==1) {
 			startTask(MG8);
 					}
-		bool DriveUse;
+//Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
-		{
-			DriveUse = true;
 			X1 = vexRT[Ch1];
-		}
-		else if(DriveUse == true)
-		{
-			DriveUse = false;
+		else
 			X1 = 0;
-		}
 	  if(abs(vexRT[Ch2]) > threshold)
-		{
-			DriveUse = true;
 			Y1 = vexRT[Ch2];
-		}
-		else if(DriveUse == true)
-		{
-			DriveUse = false;
+		else
 			Y1 = 0;
-		}
+
 		if(abs(vexRT[Ch3]) > threshold)
-		{
-			DriveUse = true;
 			Y2 = vexRT[Ch3];
-		}
-		else if(DriveUse == true)
-		{
-			DriveUse = false;
+		else
 			Y2 = 0;
-		}
+
 		if(abs(vexRT[Ch4]) > threshold)
-		{
-			DriveUse = true;
 			X2 = vexRT[Ch4];
-		}
-		else if(DriveUse == true)
-		{
-			DriveUse = false;
+		else
 			X2 = 0;
-		}
    	motor[FrontLeftDrive] = Y2*(7.0/8.0);
 		motor[FrontRightDrive] = -Y1*(7.0/8.0);
 		motor[BackLeftDrive] = Y2*(7.0/8.0);
@@ -629,7 +606,7 @@ task usercontrol()
 			RotatingClawLift = false;
  			motor [LiftClawRotate]= 0;
 		}
-		
+
 //Claw Control --- Controller 2
 		//Open&Close
 		bool ClawUse;
