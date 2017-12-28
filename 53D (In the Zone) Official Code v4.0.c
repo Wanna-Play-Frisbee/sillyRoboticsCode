@@ -39,51 +39,10 @@
 /*  function is only called once after the cortex has been powered on and    */
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
-
 void pre_auton()
 {
-//int kDefaultTaskPriority = 255;
 bStopTasksBetweenModes = true;
-/* string mainBattery, backupBattery;
-bLCDBacklight = true;
-while(true)
- {
- clearLCDLine(0);
- clearLCDLine(1);
-if(SensorValue[AutoSelect] <= 400)
-		{
-			displayLCDCenteredString(0, "Autonomous:");
-			displayLCDCenteredString(1, "MGL");
-		}
-else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400)
-		{
-			displayLCDCenteredString(0, "Autonomous:");
-			displayLCDCenteredString(1, "MGR");
-		}
-else if(SensorValue[AutoSelect] >= 1400 && SensorValue[AutoSelect] <2300)
-		{
-			displayLCDCenteredString(0, "Autonomous:");
-			displayLCDCenteredString(1, "SGC");
-		}
-else if(SensorValue[AutoSelect] >= 2300)
-		{
-//Display the Primary Robot battery voltage
-displayLCDString(0, 0, "Primary: ");
-sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
-displayNextLCDString(mainBattery);
-
- int battery2Level = (int)((float)SensorValue[ BATERY_2_PORT ] * 5.48);
-
-
-//Display the Backup battery voltage
-displayLCDString(1, 0, "Backup: ");
-sprintf(backupBattery, "%1.2f%c", battery2Level/1000.0, 'V');    //Build the value to be displayed
-displayNextLCDString(backupBattery);
-		}
-		wait1Msec(200);
-	} */
 }
-
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
@@ -93,17 +52,17 @@ displayNextLCDString(backupBattery);
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-
 task autonomous()
 {
 if(SensorValue[AutoSelect] <= 400) //MGL
 {
+	//Rotate the Claw and Close the Claw
 		motor [LiftClawRotate]=95;
 		motor [ClawOC]=-90;
 		delay(1200);
 		motor [LiftClawRotate]=0;
 		delay(500);
-	//Mobile Lift Down and Drive
+	//Drive Forward
 		motor [MobileLiftLeft] = -127;
 		motor [MobileLiftRight] = 127;
 		motor [FrontLeftDrive] = 72;
@@ -111,6 +70,7 @@ if(SensorValue[AutoSelect] <= 400) //MGL
 		motor [BackLeftDrive] = 72;
 		motor [BackRightDrive] = -127;
 		delay(2000);
+	//Stop the Driving
 		motor[MobileLiftLeft] = 0;
 		motor[MobileLiftRight]= 0;
 		motor[FrontLeftDrive] = 0;
@@ -188,13 +148,13 @@ if(SensorValue[AutoSelect] <= 400) //MGL
 else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGR
     {
 
-//			//Rotate Claw
+	//Rotate Claw and Close the Claw
 		motor [LiftClawRotate]=95;
 		motor [ClawOC]=-90;
 		delay(900);
 		motor [LiftClawRotate]=0;
 		delay(500);
-	//Mobile Lift Down and Drive
+	//Drive Forward
 		motor [MobileLiftLeft] = -127;
 		motor [MobileLiftRight] = 127;
 		motor [FrontLeftDrive] = 72;
@@ -276,73 +236,74 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGR
 		motor[BackRightDrive] = 0;
     }
 if(SensorValue[AutoSelect] >= 1400) //SGC
-		{//go forward a little
+		{
+			//Drive Forward a Tiny Bit
 			motor [ClawOC] = -127;
 			motor [FrontLeftDrive] = 127;
 			motor [FrontRightDrive] = -127;
 			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = -127;
 			delay(150);
-			//stop going forward
+			//Stop Driving
 			motor [FrontLeftDrive] = 0;
 			motor [FrontRightDrive] = 0;
 			motor [BackLeftDrive] = 0;
 			motor [BackRightDrive] = 0;
 			delay(10);
-			//stop rotating, go up
+			//Lift the Up/Down Lift
 			motor [LiftClawRotate] = 0;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
 			delay(1920);
-			//stop u/d lift
+			//Stop the Up/Down Lift
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 			delay(10);
-			//rotate lifty boi
+			//Rotate the Claw to the Back
 			motor [LiftClawRotate] = 127;
 			delay(1100);
-			//go forward, unto thine goal!
+			//Drive Forward
 			motor [FrontLeftDrive] = 127;
 			motor [FrontRightDrive] = -127;
 			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = -127;
 			delay(950);
-			//stop going forward
+			//Stop Driving
 			motor[FrontLeftDrive] = 0;
 			motor[FrontRightDrive] = 0;
 			motor[BackLeftDrive] = 0;
 			motor[BackRightDrive] = 0;
 			delay(10);
-			//put the cone on that boi
+			//Rotate the Rotate Lift Towards the Front and onto the Stationary Goal
 			motor [LiftClawRotate] = -127;
 			delay(1800);
-			//stoppy boiz
+			//Stop the Rotation
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			delay(10);
-			//open claw
+			//Open the Claw
 			motor [ClawOC] = 127;
 			delay(200);
-			//rotate awayyy
+			//Rotate the Rotate Lift to the Back of the Bot
 			motor [LiftClawRotate] = 127;
 			delay(1000);
-			//go baaaaack
+			//Drive Backwards
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = 127;
 			motor [BackLeftDrive] = -127;
 			motor [BackRightDrive] = 127;
 			delay(690);
-			//stop going baaaaaaaack
+			//Stop Driving
 			motor [FrontLeftDrive] = 0;
 			motor [FrontRightDrive] = 0;
 			motor [BackLeftDrive] = 0;
 			motor [BackRightDrive] = 0;
 			delay(10);
-			//put it downnnnn
+			//Make the Up/Down Lift go Down
 			motor [LeftLiftUD] = 127;
 			motor [RightLiftUD] = -127;
 			delay (1920);
-			//stop them motory bois
+			//Stop All Motors
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
@@ -354,20 +315,17 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 
 		}
 }
-//////////////////////////////////////////////////////////////////////////////////////
-
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                              User Control Task                            */
+/*                              Tasks                                        */
 /*                                                                           */
-/*  This task is used to control your robot during the user control phase of */
-/*  a VEX Competition.                                                       */
+/*  This task is used to control stacking robot during the user control      */
+/*   phase of a VEX Competition.                                             */
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-task SG1()
+task SG1() //Stationary Goal Cone 1
 			{
-				//Stationary Goal Cone 1
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -391,9 +349,8 @@ task SG1()
 
 			EndTimeSlice();
 	}
-task SG2()
+task SG2() //Stationary Goal Cone 2
 			{
-		  //Stationary Goal Cone 2
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -417,9 +374,8 @@ task SG2()
 
 		EndTimeSlice();
 		}
-task SG3()
+task SG3() //Stationary Goal Cone 3
 			{
-		  //Stationary Goal Cone 3
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -443,9 +399,8 @@ task SG3()
 
 			EndTimeSlice();
 		}
-task SG4()
+task SG4() //Stationary Goal Cone 4
 			{
-		  //Stationary Goal Cone 4
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -469,9 +424,8 @@ task SG4()
 
 			EndTimeSlice();
 		}
-task MG5()
+task MG5() //Cone Stacking up to 5
 			{
-			//Cone Stacking up to 5
 			motor [ClawOC] = -127;
 			motor [LiftClawRotate] = -127;
 			delay (2600);
@@ -483,9 +437,8 @@ task MG5()
 
 			EndTimeSlice();
 		}
-task MG6()
+task MG6() // Stacking Cone 6
 			{
-		  // Stacking Cone 6
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -509,9 +462,8 @@ task MG6()
 
 			EndTimeSlice();
 		}
-task MG7()
+task MG7() // Stacking Cone 7
 			{
-		  // Stacking Cone 7
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -535,9 +487,8 @@ task MG7()
 
 			EndTimeSlice();
 		}
-task MG8()
+task MG8() // Stacking Cone 8
 			{
-		  // Stacking Cone 8
 			motor [ClawOC] = -127;
 			motor [LeftLiftUD] = -127;
 			motor [RightLiftUD] = 127;
@@ -561,39 +512,82 @@ task MG8()
 
 			EndTimeSlice();
 	}
+/*---------------------------------------------------------------------------*/
+/*                                                                           */
+/*                              User Control Task                            */
+/*                                                                           */
+/*  This task is used to control your robot during the user control phase of */
+/*  a VEX Competition.                                                       */
+/*                                                                           */
+/*  You must modify the code to add your own robot specific commands here.   */
+/*---------------------------------------------------------------------------*/
 task usercontrol()
 {
-	//int kLowPriority = 1;
-	//word nSchedulePriority = kLowPriority;
+string mainBattery, backupBattery; //Set up Variables "mainBattery" "backupBattery"
+bLCDBacklight = true; //Turn on the Backlight in the LCD
   while (true)
   {
+ clearLCDLine(0); //Clears the Top Section of the Display
+ clearLCDLine(1); //Clears the Bottom Section of the Display
+if(SensorValue[AutoSelect] <= 400)
+		{
+			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
+			displayLCDCenteredString(1, "MGL"); //Display the Autonomous on the Top Line
+		}
+else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400)
+		{
+			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
+			displayLCDCenteredString(1, "MGR"); //Display the Autonomous on the Top Line
+		}
+else if(SensorValue[AutoSelect] >= 1400 && SensorValue[AutoSelect] <2300)
+		{
+			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
+			displayLCDCenteredString(1, "SGC"); //Display the Autonomous on the Top Line
+		}
+else if(SensorValue[AutoSelect] >= 2300)
+		{
+//Display the Primary Robot battery voltage
+displayLCDString(0, 0, "Primary: ");
+sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the Value to be Displayed
+displayNextLCDString(mainBattery);
 
-	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, R1 = 0, threshold = 5, o=0;
-	while (1==1)
+ int battery2Level = (int)((float)SensorValue[ BATERY_2_PORT ] * 5.48);
+
+
+//Display the Backup battery voltage
+displayLCDString(1, 0, "Backup: ");
+sprintf(backupBattery, "%1.2f%c", battery2Level/1000.0, 'V');    //Build the Value to be Displayed
+displayNextLCDString(backupBattery);
+		}
+		wait1Msec(200);
+		
+	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
+	while (1==1) //Infinite Loop
 	{
+			//Calls the Tasks Stated Above: Lines 366-553
 					if(vexRT [Btn7LXmtr2]==1) {
-			startTask(SG1, 255);
+			startTask(SG1, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7UXmtr2]==1) {
-			startTask(SG2, 255);
+			startTask(SG2, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7RXmtr2]==1) {
-			startTask(SG3, 255);
+			startTask(SG3, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7DXmtr2]==1) {
-			startTask(SG4, 255);
+			startTask(SG4, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8LXmtr2]==1) {
-			startTask(MG5, 255);
+			startTask(MG5, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8UXmtr2]==1) {
-			startTask(MG6, 255);
+			startTask(MG6, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8RXmtr2]==1) {
-			startTask(MG7, 255);
+			startTask(MG7, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8DXmtr2]==1) {
-			startTask(MG8, 255);
+			startTask(MG8, 255);             //Starts the Task (For Threading Purposes)
 					}
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
