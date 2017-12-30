@@ -1,5 +1,5 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in1,    BATERY_2_PORT,  sensorAnalog)
+#pragma config(Sensor, in1,    BATERY_2_PORT,  sensorNone)
 #pragma config(Sensor, in4,    AutoSelect,     sensorPotentiometer)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -54,186 +54,128 @@ bStopTasksBetweenModes = true;
 /*---------------------------------------------------------------------------*/
 task autonomous()
 {
-if(SensorValue[AutoSelect] <= 400) //MGL
-{
-	//Rotate the Claw and Close the Claw
-		motor [LiftClawRotate]=95;
-		motor [ClawOC]=-90;
-		delay(1200);
-		motor [LiftClawRotate]=0;
-		delay(500);
-	//Drive Forward
-		motor [MobileLiftLeft] = -127;
-		motor [MobileLiftRight] = 127;
-		motor [FrontLeftDrive] = 72;
-		motor [FrontRightDrive] = -127;
-		motor [BackLeftDrive] = 72;
-		motor [BackRightDrive] = -127;
-		delay(2000);
-	//Stop the Driving
-		motor[MobileLiftLeft] = 0;
-		motor[MobileLiftRight]= 0;
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Pick Up Mobile Goal
-		motor [MobileLiftLeft] = 127;
-		motor [MobileLiftRight] = -127;
-		delay(1500);
-		motor [MobileLiftLeft] = 0;
-		motor [MobileLiftRight] = 0;
-	//Place Cone on Mobile Goal
-		motor [LiftClawRotate]= -95;
-		delay(2000);
-		motor [LiftClawRotate]=0;
-		motor [ClawOC] = 90;
-		motor [LiftClawRotate]=127;
-		delay(500);
-		motor [ClawOC] = -90;
-		delay(500);
-		motor [ClawOC] = 0;
-	//Rotate Claw and Drive Backwards
-		motor[LiftClawRotate]=127;
-		motor[FrontLeftDrive] = -72;
-		motor[FrontRightDrive] = 127;
-		motor[BackLeftDrive] = -72;
-		motor[BackRightDrive] = 127;
-		delay(1000);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Turn
-		motor[FrontLeftDrive] = -60;
-		motor[FrontRightDrive] = -60;
-		motor[BackLeftDrive] = -60;
-		motor[BackRightDrive] = -60;
-		delay(1200);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Drive Forward to 10pt
-		motor[FrontLeftDrive] = 72;
-		motor[FrontRightDrive] = -127;
-		motor[BackLeftDrive] = 72;
-		motor[BackRightDrive] = -127;
-		delay(400);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-	//Put Down Mobile Goal
-		motor [MobileLiftLeft] = -127;
-		motor [MobileLiftRight] = 127;
-		delay(1000);
-		motor [MobileLiftLeft] = 0;
-		motor [MobileLiftRight] = 0;
-	//Back Up
-		motor[FrontLeftDrive] = -72;
-		motor[FrontRightDrive] = 127;
-		motor[BackLeftDrive] = -72;
-		motor[BackRightDrive] = 127;
-		delay(500);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
+if(SensorValue[AutoSelect] <= 400) //MGLb
+	  {
+	  	//close claw, start rotating
+	    motor [ClawOC] = -127;
+	    motor [LiftClawRotate] = 127;
+			delay(50);
+			//stop rotating, start driving and put out mobile lift
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = 127;
+			motor [LiftClawRotate] = 0;
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+			delay(160);
+			//stop everything, bring in the mobile lift
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+		  motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = -127;
+			delay(80);
+			//rotate that boi
+		  motor [LiftClawRotate] = 127;
+			delay(40);
+			//stop rotationg, open claw
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 127;
+			delay(20);
+			//rotate awayyyyy
+			motor [LiftClawRotate] = -127;
     }
+    /**void functionName(int delay) {
+    }**/
 
-else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGR
+else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
     {
+	  	//close claw, start rotating
+	    motor [ClawOC] = -127;
+	    motor [LiftClawRotate] = 127;
+			delay(1060);
+			//stop rotating, start driving and put out mobile lift
+			motor [LiftClawRotate] = 0;
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = 127;
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+			delay(1560);
+			//keep driving, stop pushing on mobile boi
+		  motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			delay(1040);
+			//stop everything, bring in the mobile lift
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+		  motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = -127;
+			delay(480);
+			//start rotating into place, drive away
+			motor [LiftClawRotate] = -127;
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = 127;
+			delay(480);
+			//stop rotating, drop cone on goal
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 0;
+			delay(250);
+			//rotate awayyy, keep driving
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			motor [LiftClawRotate] = 127;
+			motor [ClawOC] = 0;
+			delay(880);
+			//stop claw, stop rotating keep driving
+			motor [ClawOC] = 0;
+		  motor [LiftClawRotate] = 0;
+			delay(1100);
+			//spinnn
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(1060);
+			//stop spinning
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay(100);
+			//put out mobile goal
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = 127;
+			delay(740);
+			//backup
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = 127;
+			delay(520);
+			//bring in mobile goal
+			motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = -127;
+			delay(420);
+			//stoppyBoi.jpg
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
 
-	//Rotate Claw and Close the Claw
-		motor [LiftClawRotate]=95;
-		motor [ClawOC]=-90;
-		delay(900);
-		motor [LiftClawRotate]=0;
-		delay(500);
-	//Drive Forward
-		motor [MobileLiftLeft] = -127;
-		motor [MobileLiftRight] = 127;
-		motor [FrontLeftDrive] = 72;
-		motor [FrontRightDrive] = -127;
-		motor [BackLeftDrive] = 72;
-		motor [BackRightDrive] = -127;
-		delay(2000);
-		motor[MobileLiftLeft] = 0;
-		motor[MobileLiftRight]= 0;
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Pick Up Mobile Goal
-		motor [MobileLiftLeft] = 127;
-		motor [MobileLiftRight] = -127;
-		delay(1500);
-		motor [MobileLiftLeft] = 0;
-		motor [MobileLiftRight] = 0;
-	//Place Cone on Mobile Goal
-		motor [LiftClawRotate]= -95;
-		delay(2000);
-		motor [LiftClawRotate]=0;
-		motor [ClawOC] = 90;
-		motor [LiftClawRotate]=127;
-		delay(500);
-		motor [ClawOC] = -90;
-		delay(500);
-		motor [ClawOC] = 0;
-	//Rotate Claw and Drive Backwards
-		motor[LiftClawRotate]=127;
-		motor[FrontLeftDrive] = -72;
-		motor[FrontRightDrive] = 127;
-		motor[BackLeftDrive] = -72;
-		motor[BackRightDrive] = 127;
-		delay(1000);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Turn
-		motor[FrontLeftDrive] = 60;
-		motor[FrontRightDrive] = 60;
-		motor[BackLeftDrive] = 60;
-		motor[BackRightDrive] = 60;
-		delay(900);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-		delay(500);
-	//Drive Forward to 10pt
-		motor[FrontLeftDrive] = 72;
-		motor[FrontRightDrive] = -127;
-		motor[BackLeftDrive] = 72;
-		motor[BackRightDrive] = -127;
-		delay(400);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
-	//Put Down Mobile Goal
-		motor [MobileLiftLeft] = -127;
-		motor [MobileLiftRight] = 127;
-		delay(1000);
-		motor [MobileLiftLeft] = 0;
-		motor [MobileLiftRight] = 0;
-	//Back Up
-		motor[FrontLeftDrive] = -72;
-		motor[FrontRightDrive] = 127;
-		motor[BackLeftDrive] = -72;
-		motor[BackRightDrive] = 127;
-		delay(500);
-		motor[FrontLeftDrive] = 0;
-		motor[FrontRightDrive] = 0;
-		motor[BackLeftDrive] = 0;
-		motor[BackRightDrive] = 0;
     }
 if(SensorValue[AutoSelect] >= 1400) //SGC
 		{
@@ -313,8 +255,9 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 			motor[BackLeftDrive] = 0;
 			motor[BackRightDrive] = 0;
 
-		}
+	}
 }
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Tasks                                        */
@@ -562,12 +505,12 @@ bLCDBacklight = true; //Turn on the Backlight in the LCD
 if(SensorValue[AutoSelect] <= 400)
 		{
 			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
-			displayLCDCenteredString(1, "MGL"); //Display the Autonomous on the Top Line
+			displayLCDCenteredString(1, "MGLb"); //Display the Autonomous on the Top Line
 		}
 else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400)
 		{
 			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
-			displayLCDCenteredString(1, "MGR"); //Display the Autonomous on the Top Line
+			displayLCDCenteredString(1, "MGRr"); //Display the Autonomous on the Top Line
 		}
 else if(SensorValue[AutoSelect] >= 1400 && SensorValue[AutoSelect] <2300)
 		{
@@ -590,7 +533,7 @@ sprintf(backupBattery, "%1.2f%c", battery2Level, 'V');    //Build the Value to b
 displayNextLCDString(backupBattery);
 		}
 		wait1Msec(200);
-		
+
 	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
 	while (1==1) //Infinite Loop
 	{
@@ -714,4 +657,22 @@ displayNextLCDString(backupBattery);
 	}
 }
 }
+}
+void driveForward (){
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = 127;
+}
+void driveBackwards (){
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+}
+void stopDriveTrain (){
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
 }
