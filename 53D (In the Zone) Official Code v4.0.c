@@ -498,9 +498,10 @@ task usercontrol()
 {
 string mainBattery, backupBattery; //Set up Variables "mainBattery" "backupBattery"
 bLCDBacklight = true; //Turn on the Backlight in the LCD
-  while (true)
-  {
- clearLCDLine(0); //Clears the Top Section of the Display
+	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
+	while (1==1) //Infinite Loop
+	{
+		clearLCDLine(0); //Clears the Top Section of the Display
  clearLCDLine(1); //Clears the Bottom Section of the Display
 if(SensorValue[AutoSelect] <= 400)
 		{
@@ -531,12 +532,8 @@ displayNextLCDString(mainBattery);
 displayLCDString(1, 0, "Backup: ");
 sprintf(backupBattery, "%1.2f%c", battery2Level, 'V');    //Build the Value to be Displayed
 displayNextLCDString(backupBattery);
-		}
-		wait1Msec(200);
-
-	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
-	while (1==1) //Infinite Loop
-	{
+//wait1Msec(200);
+}
 			//Calls the Tasks Stated Above: Lines 366-553
 					if(vexRT [Btn7LXmtr2]==1) {
 			startTask(SG1, 255);             //Starts the Task (For Threading Purposes)
