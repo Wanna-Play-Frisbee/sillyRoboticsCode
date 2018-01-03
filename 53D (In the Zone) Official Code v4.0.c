@@ -6,7 +6,7 @@
 #pragma config(Motor,  port1,           MobileLiftLeft, tmotorVex393_HBridge, openLoop, reversed)
 #pragma config(Motor,  port2,           FrontLeftDrive, tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           FrontRightDrive, tmotorVex393_MC29, openLoop, reversed)
-#pragma config(Motor,  port4,           LeftLiftUD,    tmotorVex393_MC29, PIDControl, encoderPort, I2C_1)
+#pragma config(Motor,  port4,           LeftLiftUD,    tmotorVex393_MC29, PIDControl, reversed, encoderPort, I2C_1)
 #pragma config(Motor,  port5,           RightLiftUD,   tmotorVex393_MC29, PIDControl, encoderPort, I2C_2)
 #pragma config(Motor,  port6,           ClawOC,        tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port7,           LiftClawRotate, tmotorVex393_MC29, openLoop)
@@ -43,6 +43,41 @@ void pre_auton()
 {
 bStopTasksBetweenModes = true;
 }
+void driveForward (int tdelay){
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = 127;
+			delay(tdelay);
+}
+void driveBackwards (int tdelay){
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(tdelay);
+}
+void stopDriveTrain (){
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+}
+void mobilePush (int tdelay){
+			motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = 127;
+			delay(tdelay);
+}
+void mobilePull (int tdelay){
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = -127;
+			delay(tdelay);
+}
+void mobileStop (int tdelay) {
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			delay(tdelay);
+}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
@@ -55,60 +90,22 @@ bStopTasksBetweenModes = true;
 task autonomous()
 {
 if(SensorValue[AutoSelect] <= 400) //MGLb
-	  {
-	  	//close claw, start rotating
-	    motor [ClawOC] = -127;
-	    motor [LiftClawRotate] = 127;
-			delay(50);
-			//stop rotating, start driving and put out mobile lift
-			motor [MobileLiftLeft] = 127;
-			motor [MobileLiftRight] = 127;
-			motor [LiftClawRotate] = 0;
-			motor [FrontLeftDrive] = 127;
-			motor [FrontRightDrive] = 127;
-			motor [BackLeftDrive] = 127;
-			motor [BackRightDrive] = 127;
-			delay(160);
-			//stop everything, bring in the mobile lift
-			motor [FrontLeftDrive] = 0;
-			motor [FrontRightDrive] = 0;
-			motor [BackLeftDrive] = 0;
-			motor [BackRightDrive] = 0;
-		  motor [MobileLiftLeft] = -127;
-			motor [MobileLiftRight] = -127;
-			delay(80);
-			//rotate that boi
-		  motor [LiftClawRotate] = 127;
-			delay(40);
-			//stop rotationg, open claw
-			motor [LiftClawRotate] = 0;
-			motor [ClawOC] = 127;
-			delay(20);
-			//rotate awayyyyy
-			motor [LiftClawRotate] = -127;
-    }
-    /**void functionName(int delay) {
-    }**/
-
-else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
     {
 	  	//close claw, start rotating
 	    motor [ClawOC] = -127;
 	    motor [LiftClawRotate] = 127;
-			delay(1060);
+			delay(1169);
 			//stop rotating, start driving and put out mobile lift
 			motor [LiftClawRotate] = 0;
-			motor [MobileLiftLeft] = 127;a
+			motor [MobileLiftLeft] = 127;
 			motor [MobileLiftRight] = 127;
 			motor [FrontLeftDrive] = 127;
-			motor [FrontRightDrive] = 127;a
+			motor [FrontRightDrive] = 127;
 			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = 127;
 			delay(1560);
-			//keep driving, stop pushing on mobile boi
-		  motor [MobileLiftLeft] = 0;
-			motor [MobileLiftRight] = 0;
-			delay(1040);
+			//stop mobile lift, keep driving
+			mobileStop(1040);
 			//stop everything, bring in the mobile lift
 			motor [FrontLeftDrive] = 0;
 			motor [FrontRightDrive] = 0;
@@ -133,32 +130,166 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 			motor [MobileLiftRight] = 0;
 			motor [LiftClawRotate] = 127;
 			motor [ClawOC] = 0;
-			delay(880);
-			//stop claw, stop rotating keep driving
-			motor [ClawOC] = 0;
-		  motor [LiftClawRotate] = 0;
-			delay(1100);
+			delay(1480);
 			//spinnn
-			motor [FrontLeftDrive] = -127;
-			motor [FrontRightDrive] = 127;
-			motor [BackLeftDrive] = -127;
-			motor [BackRightDrive] = 127;
-			delay(1060);
-			//stop spinning
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = -127;
+			motor [LiftClawRotate] = 0;
+			delay(1360);
+			//stop spinning, stop rotator, open claw
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 0;
 			motor [FrontLeftDrive] = 0;
 			motor [FrontRightDrive] = 0;
 			motor [BackLeftDrive] = 0;
 			motor [BackRightDrive] = 0;
 			delay(100);
-			//put out mobile goal
+			//backup into cone
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(640);
+			//grab the cone, stop driving
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = 0;
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay (150);
+			//rotate cone into place
+			motor [LiftClawRotate] = -127;
+			delay(2400);
+			//drop cone
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 127;
+			delay(150);
+			//stop claw, rotate away & put out mobile goal while driving forward
+			motor [ClawOC] = 0;
+			motor [LiftClawRotate] = 127;
 			motor [FrontLeftDrive] = 127;
 			motor [FrontRightDrive] = 127;
 			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = 127;
 			motor [MobileLiftLeft] = 127;
 			motor [MobileLiftRight] = 127;
-			delay(740);
+			delay(640);
+			stopDriveTrain();
 			//backup
+			motor [LiftClawRotate] = 0;
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(520);
+			//bring in mobile goal
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = -127;
+			delay(420);
+			//stoppyBoi.jpg
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+
+    }
+
+else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
+    {
+	  	//close claw, start rotating
+	    motor [ClawOC] = -127;
+	    motor [LiftClawRotate] = 127;
+			delay(1160);
+			//stop rotating, start driving and put out mobile lift
+			motor [LiftClawRotate] = 0;
+			motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = 127;
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = 127;
+			delay(1560);
+			//stop mobile lift, keep driving
+			mobileStop(1040);
+			//stop everything, bring in the mobile lift
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+		  motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = -127;
+			delay(480);
+			//start rotating into place, drive away
+			motor [LiftClawRotate] = -127;
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(480);
+			//stop rotating, drop cone on goal
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 0;
+			delay(250);
+			//rotate awayyy, keep driving
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			motor [LiftClawRotate] = 127;
+			motor [ClawOC] = 0;
+			delay(1480);
+			//spinnn
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = 127;
+			motor [LiftClawRotate] = 0;
+			delay(1260);
+			//stop spinning, stop rotator, open claw
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 0;
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay(100);
+			//backup into cone
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+			delay(640);
+			//grab the cone, stop driving
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = 0;
+			motor [FrontLeftDrive] = 0;
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
+			delay (150);
+			//rotate cone into place
+			motor [LiftClawRotate] = -127;
+			delay(2400);
+			//drop cone
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 127;
+			delay(150);
+			//stop claw, rotate away & put out mobile goal while driving forward
+			motor [ClawOC] = 0;
+			motor [LiftClawRotate] = 127;
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = 127;
+			motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = 127;
+			delay(640);
+			stopDriveTrain();
+			//backup
+			motor [LiftClawRotate] = 0;
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = -127;
 			motor [BackLeftDrive] = -127;
@@ -267,6 +398,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
+int stackVal;
 task SG1() //Stationary Goal Cone 1
 			{
 			//lifts lift and clenches claw tightly onto cone
@@ -455,7 +587,7 @@ task MG7() // Stacking Cone 7
 			motor [RightLiftUD] = 0;
 
 			EndTimeSlice();
-		}
+	}
 task MG8() // Stacking Cone 8
 			{
 			//lifts lift and clenches claw tightly onto cone
@@ -485,6 +617,24 @@ task MG8() // Stacking Cone 8
 
 			EndTimeSlice();
 	}
+task stackReset(){
+
+}
+
+task stackSwitch(){
+	stackVal+=1;
+	switch(stackVal){
+		case 1:{
+		}
+		case 2:{
+		}
+		case 3:{
+		}
+		case 4:{
+		}
+
+	}
+}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -653,23 +803,4 @@ displayNextLCDString(backupBattery);
 
 	}
 }
-}
-}
-void driveForward (){
-			motor [FrontLeftDrive] = -127;
-			motor [FrontRightDrive] = -127;
-			motor [BackLeftDrive] = -127;
-			motor [BackRightDrive] = -127;
-}
-void driveBackwards (){
-			motor [FrontLeftDrive] = 127;
-			motor [FrontRightDrive] = 127;
-			motor [BackLeftDrive] = 127;
-			motor [BackRightDrive] = 127;
-}
-void stopDriveTrain (){
-			motor [FrontLeftDrive] = 0;
-			motor [FrontRightDrive] = 0;
-			motor [BackLeftDrive] = 0;
-			motor [BackRightDrive] = 0;
 }
