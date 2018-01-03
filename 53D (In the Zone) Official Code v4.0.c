@@ -618,19 +618,166 @@ task MG8() // Stacking Cone 8
 			EndTimeSlice();
 	}
 task stackReset(){
+	stackVal=0;
+}
 
+task stackRm() {
+	stackVal-=1;
 }
 
 task stackSwitch(){
 	stackVal+=1;
 	switch(stackVal){
 		case 1:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2600);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2300);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+
 		}
 		case 2:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2400);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2300);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+
 		}
 		case 3:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2200);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2200);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+
 		}
 		case 4:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2000);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2100);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+
+		}
+		case 5:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (1800);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (2000);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+
+		}
+		case 6:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = 127;
+			delay (900);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2500);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (1900);
+			//returns the bot's limbs to starting position
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = -127;
+			delay (1000);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+
+		}
+		case 7:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = 127;
+			delay (2200);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2100);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (800);
+			//returns the bot's limbs to starting position
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = -127;
+			delay (1900);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+
+		}
+		case 8:{
+			//lifts lift and clenches claw tightly onto cone
+			motor [ClawOC] = -127;
+			motor [LeftLiftUD] = 127;
+			motor [RightLiftUD] = 127;
+			delay (3500);
+			//stops raising lift and places cone onto stationary lift, letting go of the cone
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+			motor [ClawOC] = -127;
+			motor [LiftClawRotate] = -127;
+			delay (2000);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (1100);
+			//returns the bot's limbs to starting position
+			motor [LiftClawRotate] = 0;
+			motor [LeftLiftUD] = -127;
+			motor [RightLiftUD] = -127;
+			delay (2900);
+			//stops all the motors(end of task)
+			motor [LiftClawRotate] = 0;
+			motor [ClawOC] = 0;
+			motor [LeftLiftUD] = 0;
+			motor [RightLiftUD] = 0;
+
 		}
 
 	}
