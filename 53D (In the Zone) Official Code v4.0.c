@@ -398,7 +398,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-int stackVal;
+int stackVal; //Setting the Variable for Stacking
 task SG1() //Stationary Goal Cone 1
 			{
 			//lifts lift and clenches claw tightly onto cone
@@ -514,6 +514,8 @@ task SG4() //Stationary Goal Cone 4
 
 			EndTimeSlice();
 		}
+		
+//Old Tasks for Stacking Cones on the Mobile Goal
 /* task MG5() //Cone Stacking up to 5
 			{
 			//lifts lift and clenches claw tightly onto cone
@@ -617,6 +619,7 @@ task MG8() // Stacking Cone 8
 
 			EndTimeSlice();
 	} */
+//New Tasks for Stacking Cones on the Mobile Goal
 task stackReset(){
 	stackVal=0;
 }
@@ -833,39 +836,47 @@ displayNextLCDString(backupBattery);
 }
 			//Calls the Tasks Stated Above: Lines 366-553
 					if(vexRT [Btn7LXmtr2]==1) {
-			startTask(SG1, 255);             //Starts the Task (For Threading Purposes)
+			startTask(SG1, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7UXmtr2]==1) {
-			startTask(SG2, 255);             //Starts the Task (For Threading Purposes)
+			startTask(SG2, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7RXmtr2]==1) {
-			startTask(SG3, 255);             //Starts the Task (For Threading Purposes)
+			startTask(SG3, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7DXmtr2]==1) {
-			startTask(SG4, 255);             //Starts the Task (For Threading Purposes)
+			startTask(SG4, 254);             //Starts the Task (For Threading Purposes)
 					}
+//Old Tasks for Stacking Cones on the Mobile Goal
 /*					if(vexRT [Btn8LXmtr2]==1) {
-			startTask(MG5, 255);             //Starts the Task (For Threading Purposes)
+			startTask(MG5, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8UXmtr2]==1) {
-			startTask(MG6, 255);             //Starts the Task (For Threading Purposes)
+			startTask(MG6, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8RXmtr2]==1) {
-			startTask(MG7, 255);             //Starts the Task (For Threading Purposes)
+			startTask(MG7, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8DXmtr2]==1) {
-			startTask(MG8, 255);             //Starts the Task (For Threading Purposes)
+			startTask(MG8, 254);             //Starts the Task (For Threading Purposes)
 					} */
-//New Code For All Mobile Cone Stacking on One Button
+					
+//New Tasks for All Mobile Cone Stacking on One Button
 					if(vexRT [Btn8LXmtr2]==1) {
-			startTask(stackSwitch, 255);             //Starts the Task (For Threading Purposes)
+			startTask(stackSwitch, 254);             //Starts the Task (For Threading Purposes)
 				}
 					if(vexRT [Btn8RXmtr2]==1) {
-			startTask(stackReset, 255);             //Starts the Task (For Threading Purposes)
+			startTask(stackReset, 254);             //Starts the Task (For Threading Purposes)
 				}
 					if(vexRT [Btn8DXmtr2]==1) {
-			startTask(stackRm, 255);             //Starts the Task (For Threading Purposes)
+			startTask(stackRm, 254);             //Starts the Task (For Threading Purposes)
 				}
+//Abort Tasks to Stop All Tasks if Something Went Wrong
+					if(vexRT [Btn8UXmtr2]==1) {
+			stopTask(stackSwitch, 255);
+			stopTask(stackReset, 255);
+			stopTask(stackRm, 255);
+			  }
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
 			X1 = vexRT[Ch1];
