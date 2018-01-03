@@ -876,6 +876,15 @@ displayNextLCDString(backupBattery);
 			stopTask(stackSwitch, 255);
 			stopTask(stackReset, 255);
 			stopTask(stackRm, 255);
+			stopTask(SG1, 255);
+			stopTask(SG2, 255);
+			stopTask(SG3, 255);
+			stopTask(SG4, 255);
+//(In Case We Decide to use the Old Code)
+/*		stopTask(MG5, 255);
+			stopTask(MG6, 255);
+			stopTask(MG7, 255);
+			stopTask(MG8, 255); */
 			  }
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
