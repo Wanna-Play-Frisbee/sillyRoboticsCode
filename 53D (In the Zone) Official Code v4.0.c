@@ -399,7 +399,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 int stackVal;
-task SG1() //Stationary Goal Cone 1
+/* task SG1() //Stationary Goal Cone 1
 			{
 			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
@@ -616,7 +616,7 @@ task MG8() // Stacking Cone 8
 			motor [RightLiftUD] = 0;
 
 			EndTimeSlice();
-	}
+	} */
 task stackReset(){
 	stackVal=0;
 }
@@ -832,7 +832,7 @@ displayNextLCDString(backupBattery);
 //wait1Msec(200);
 }
 			//Calls the Tasks Stated Above: Lines 366-553
-					if(vexRT [Btn7LXmtr2]==1) {
+/*					if(vexRT [Btn7LXmtr2]==1) {
 			startTask(SG1, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7UXmtr2]==1) {
@@ -855,7 +855,17 @@ displayNextLCDString(backupBattery);
 					}
 					if(vexRT [Btn8DXmtr2]==1) {
 			startTask(MG8, 255);             //Starts the Task (For Threading Purposes)
-					}
+					} */
+//New Code For All Mobile Cone Stacking on One Button
+					if(vexRT [Btn8LXmtr2]==1) {
+			startTask(stackSwitch, 255);             //Starts the Task (For Threading Purposes)
+				}
+					if(vexRT [Btn8RXmtr2]==1) {
+			startTask(stackReset, 255);             //Starts the Task (For Threading Purposes)
+				}
+					if(vexRT [Btn8DXmtr2]==1) {
+			startTask(stackRm, 255);             //Starts the Task (For Threading Purposes)
+				}
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
 			X1 = vexRT[Ch1];
