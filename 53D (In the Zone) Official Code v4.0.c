@@ -399,7 +399,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 int stackVal;
-/* task SG1() //Stationary Goal Cone 1
+task SG1() //Stationary Goal Cone 1
 			{
 			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
@@ -514,7 +514,7 @@ task SG4() //Stationary Goal Cone 4
 
 			EndTimeSlice();
 		}
-task MG5() //Cone Stacking up to 5
+/* task MG5() //Cone Stacking up to 5
 			{
 			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
@@ -832,7 +832,7 @@ displayNextLCDString(backupBattery);
 //wait1Msec(200);
 }
 			//Calls the Tasks Stated Above: Lines 366-553
-/*					if(vexRT [Btn7LXmtr2]==1) {
+					if(vexRT [Btn7LXmtr2]==1) {
 			startTask(SG1, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn7UXmtr2]==1) {
@@ -844,7 +844,7 @@ displayNextLCDString(backupBattery);
 					if(vexRT [Btn7DXmtr2]==1) {
 			startTask(SG4, 255);             //Starts the Task (For Threading Purposes)
 					}
-					if(vexRT [Btn8LXmtr2]==1) {
+/*					if(vexRT [Btn8LXmtr2]==1) {
 			startTask(MG5, 255);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8UXmtr2]==1) {
