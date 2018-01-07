@@ -514,7 +514,7 @@ task SG4() //Stationary Goal Cone 4
 
 			EndTimeSlice();
 		}
-		
+
 //Old Tasks for Stacking Cones on the Mobile Goal
 /* task MG5() //Cone Stacking up to 5
 			{
@@ -782,9 +782,17 @@ task stackSwitch(){
 			motor [RightLiftUD] = 0;
 
 		}
-
-	}
 }
+}
+	task stopAll () {
+			stopTask(stackSwitch);
+			stopTask(stackReset);
+			stopTask(stackRm);
+			stopTask(SG1);
+			stopTask(SG2);
+			stopTask(SG3);
+			stopTask(SG4);
+	}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -860,7 +868,7 @@ displayNextLCDString(backupBattery);
 					if(vexRT [Btn8DXmtr2]==1) {
 			startTask(MG8, 254);             //Starts the Task (For Threading Purposes)
 					} */
-					
+
 //New Tasks for All Mobile Cone Stacking on One Button
 					if(vexRT [Btn8LXmtr2]==1) {
 			startTask(stackSwitch, 254);             //Starts the Task (For Threading Purposes)
@@ -873,13 +881,7 @@ displayNextLCDString(backupBattery);
 				}
 //Abort Tasks to Stop All Tasks if Something Went Wrong
 					if(vexRT [Btn8UXmtr2]==1) {
-			stopTask(stackSwitch);
-			stopTask(stackReset);
-			stopTask(stackRm);
-			stopTask(SG1);
-			stopTask(SG2);
-			stopTask(SG3);
-			stopTask(SG4);
+			startTask(stopAll, 255);
 //(In Case We Decide to use the Old Code)
 /*		stopTask(MG5, 255);
 			stopTask(MG6, 255);
