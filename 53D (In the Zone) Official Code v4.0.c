@@ -873,13 +873,13 @@ displayNextLCDString(backupBattery);
 				}
 //Abort Tasks to Stop All Tasks if Something Went Wrong
 					if(vexRT [Btn8UXmtr2]==1) {
-			stopTask(stackSwitch, 255);
-			stopTask(stackReset, 255);
-			stopTask(stackRm, 255);
-			stopTask(SG1, 255);
-			stopTask(SG2, 255);
-			stopTask(SG3, 255);
-			stopTask(SG4, 255);
+			stopTask(stackSwitch);
+			stopTask(stackReset);
+			stopTask(stackRm);
+			stopTask(SG1);
+			stopTask(SG2);
+			stopTask(SG3);
+			stopTask(SG4);
 //(In Case We Decide to use the Old Code)
 /*		stopTask(MG5, 255);
 			stopTask(MG6, 255);
