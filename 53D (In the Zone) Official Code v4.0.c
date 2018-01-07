@@ -1,6 +1,6 @@
 #pragma config(I2C_Usage, I2C1, i2cSensors)
-#pragma config(Sensor, in1,    BATERY_2_PORT,  sensorNone)
 #pragma config(Sensor, in2,    LiftRotatePot,  sensorPotentiometer)
+#pragma config(Sensor, in3,    BATERY_2_PORT,  sensorNone)
 #pragma config(Sensor, in4,    AutoSelect,     sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  RightBackDrive1, sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  LeftBackDrive1, sensorQuadEncoder)
