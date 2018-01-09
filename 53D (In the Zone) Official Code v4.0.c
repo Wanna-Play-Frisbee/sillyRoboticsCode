@@ -786,6 +786,7 @@ task stackSwitch(){
 
 		}
 }
+			EndTimeSlice();
 }
 	task stopAll () {
 			stopTask(stackSwitch);
@@ -795,6 +796,7 @@ task stackSwitch(){
 			stopTask(SG2);
 			stopTask(SG3);
 			stopTask(SG4);
+			EndTimeSlice();
 	}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
