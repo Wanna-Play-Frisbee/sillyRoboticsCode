@@ -2,8 +2,8 @@
 #pragma config(Sensor, in2,    LiftRotatePot,  sensorPotentiometer)
 #pragma config(Sensor, in3,    BATERY_2_PORT,  sensorNone)
 #pragma config(Sensor, in4,    AutoSelect,     sensorPotentiometer)
-#pragma config(Sensor, dgtl9,  RightBackDrive, sensorQuadEncoder)
-#pragma config(Sensor, dgtl11, LeftBackDrive,  sensorQuadEncoder)
+#pragma config(Sensor, dgtl9,  RightBackDrivePot, sensorQuadEncoder)
+#pragma config(Sensor, dgtl11, LeftBackDrivePot, sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           MobileLiftLeft, tmotorVex393_HBridge, openLoop, reversed)
@@ -796,6 +796,7 @@ task stackSwitch(){
 			stopTask(SG2);
 			stopTask(SG3);
 			stopTask(SG4);
+			//End the task after running it
 			EndTimeSlice();
 	}
 /*---------------------------------------------------------------------------*/
