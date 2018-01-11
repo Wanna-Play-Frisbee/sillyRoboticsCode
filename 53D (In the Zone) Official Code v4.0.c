@@ -81,6 +81,10 @@ void mobileStop (int tdelay) {
 			motor [MobileLiftRight] = 0;
 			delay(tdelay);
 }
+void sensorResetDT () {
+	SensorValue[LeftBackDrivePot] = 0;
+	SensorValue[RightBackDrivePot] = 0;
+}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
@@ -94,11 +98,13 @@ task autonomous()
 {
 if(SensorValue[AutoSelect] <= 400) //MGLb
     {
+    	SensorResetDT():
 	  	//close claw, start rotating
 	    motor [ClawOC] = -127;
 	    motor [LiftClawRotate] = 127;
-			delay(1169);
+	    delay(1169);
 			//stop rotating, start driving and put out mobile lift
+
 			motor [LiftClawRotate] = 0;
 			motor [MobileLiftLeft] = 127;
 			motor [MobileLiftRight] = 127;
@@ -107,6 +113,7 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 			motor [BackLeftDrive] = 127;
 			motor [BackRightDrive] = 127;
 			delay(1560);
+
 			//stop mobile lift, keep driving
 			mobileStop(1040);
 			//stop everything, bring in the mobile lift
@@ -204,19 +211,25 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 
 else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
     {
-	  	//close claw, start rotating
+	  	sensorResetDT();
+    	//close claw, start rotating
 	    motor [ClawOC] = -127;
 	    motor [LiftClawRotate] = 127;
-			delay(1160);
+			delay(1000);
 			//stop rotating, start driving and put out mobile lift
-			motor [LiftClawRotate] = 0;
-			motor [MobileLiftLeft] = 127;
-			motor [MobileLiftRight] = 127;
-			motor [FrontLeftDrive] = 127;
-			motor [FrontRightDrive] = 127;
-			motor [BackLeftDrive] = 127;
-			motor [BackRightDrive] = 127;
-			delay(1560);
+			while (SensorValue[RightBackDrivePot] <= 1200){
+				motor [LiftClawRotate] = 12;
+				motor [MobileLiftLeft] = 127;
+				motor [MobileLiftRight] = 127;
+				motor [FrontLeftDrive] = 127;
+				motor [FrontRightDrive] = 127;
+				motor [BackLeftDrive] = 127;
+				motor [BackRightDrive] = 127;
+				//delay(1560);
+			}
+			//reset sensors for next portion
+			sensorResetDT();
+
 			//stop mobile lift, keep driving
 			mobileStop(1040);
 			//stop everything, bring in the mobile lift
@@ -227,23 +240,25 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 		  motor [MobileLiftLeft] = -127;
 			motor [MobileLiftRight] = -127;
 			delay(480);
-			//start rotating into place, drive away
 			motor [LiftClawRotate] = -127;
+			delay(480);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 0;
+			delay(400);
+			motor [ClawOC] = 0;
+
+
+			//start rotating into place, drive away
+			while (SensorValue[RightBackDrivePot] >= -700){
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = -127;
 			motor [BackLeftDrive] = -127;
 			motor [BackRightDrive] = -127;
-			delay(480);
-			//stop rotating, drop cone on goal
-			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 0;
-			delay(250);
-			//rotate awayyy, keep driving
-			motor [MobileLiftLeft] = 0;
-			motor [MobileLiftRight] = 0;
-			motor [LiftClawRotate] = 127;
-			motor [ClawOC] = 0;
-			delay(1480);
+			motor [LiftClawRotate] = 70;
+		}
+
+		sensorResetDT();
+
 			//spinnn
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = 127;
@@ -401,7 +416,7 @@ if(SensorValue[AutoSelect] >= 1400) //SGC
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-int stackVal; //Setting the Variable for Stacking
+int stackVal = 0; //Setting the Variable for Stacking
 task SG1() //Stationary Goal Cone 1
 			{
 			//lifts lift and clenches claw tightly onto cone
@@ -456,8 +471,8 @@ task SG2() //Stationary Goal Cone 2
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-
-		EndTimeSlice();
+			//End the task after running it
+		  EndTimeSlice();
 		}
 task SG3() //Stationary Goal Cone 3
 			{
@@ -486,6 +501,7 @@ task SG3() //Stationary Goal Cone 3
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 
+			//End the task after running it
 			EndTimeSlice();
 		}
 task SG4() //Stationary Goal Cone 4
@@ -515,11 +531,12 @@ task SG4() //Stationary Goal Cone 4
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
 
+			//End the task after running it
 			EndTimeSlice();
 		}
 
 //Old Tasks for Stacking Cones on the Mobile Goal
-/* task MG5() //Cone Stacking up to 5
+task MG5() //Cone Stacking up to 5
 			{
 			//lifts lift and clenches claw tightly onto cone
 			motor [ClawOC] = -127;
@@ -621,17 +638,22 @@ task MG8() // Stacking Cone 8
 			motor [RightLiftUD] = 0;
 
 			EndTimeSlice();
-	} */
+	}
+
 //New Tasks for Stacking Cones on the Mobile Goal
-task stackReset(){
+/**task stackReset(){
 	stackVal=0;
 }
 
 task stackRm() {
-	stackVal-=1;
+	if (stackVal>=1){
+		stackVal-=1;
+	}else {
+		stackVal=0;
+	}
 }
 
-task stackSwitch(){
+task stackyBoi(){
 	stackVal+=1;
 	switch(stackVal){
 		case 1:{
@@ -646,7 +668,7 @@ task stackSwitch(){
 			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
-
+			EndTimeSlice();
 		}
 		case 2:{
 			//lifts lift and clenches claw tightly onto cone
@@ -660,7 +682,7 @@ task stackSwitch(){
 			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
-
+			EndTimeSlice();
 		}
 		case 3:{
 			//lifts lift and clenches claw tightly onto cone
@@ -674,7 +696,7 @@ task stackSwitch(){
 			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
-
+			EndTimeSlice();
 		}
 		case 4:{
 			//lifts lift and clenches claw tightly onto cone
@@ -688,7 +710,7 @@ task stackSwitch(){
 			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
-
+			EndTimeSlice();
 		}
 		case 5:{
 			//lifts lift and clenches claw tightly onto cone
@@ -702,7 +724,7 @@ task stackSwitch(){
 			//stops all the motors(end of task)
 			motor [LiftClawRotate] = 0;
 			motor [ClawOC] = 0;
-
+			EndTimeSlice();
 		}
 		case 6:{
 			//lifts lift and clenches claw tightly onto cone
@@ -729,7 +751,7 @@ task stackSwitch(){
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-
+			EndTimeSlice();
 		}
 		case 7:{
 			//lifts lift and clenches claw tightly onto cone
@@ -756,7 +778,7 @@ task stackSwitch(){
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-
+			EndTimeSlice();
 		}
 		case 8:{
 			//lifts lift and clenches claw tightly onto cone
@@ -783,15 +805,19 @@ task stackSwitch(){
 			motor [ClawOC] = 0;
 			motor [LeftLiftUD] = 0;
 			motor [RightLiftUD] = 0;
-
-		}
-}
 			EndTimeSlice();
+		}
+
 }
+			//End the task after running it
+			EndTimeSlice();
+}**/
+
 	task stopAll () {
-			stopTask(stackSwitch);
-			stopTask(stackReset);
-			stopTask(stackRm);
+			stopTask(MG5);
+			stopTask(MG6);
+			stopTask(MG7);
+			stopTask(MG8);
 			stopTask(SG1);
 			stopTask(SG2);
 			stopTask(SG3);
@@ -810,6 +836,7 @@ task stackSwitch(){
 /*---------------------------------------------------------------------------*/
 task usercontrol()
 {
+	sensorResetDT();
 string mainBattery, backupBattery; //Set up Variables "mainBattery" "backupBattery"
 bLCDBacklight = true; //Turn on the Backlight in the LCD
 	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
@@ -861,8 +888,9 @@ displayNextLCDString(backupBattery);
 					if(vexRT [Btn7DXmtr2]==1) {
 			startTask(SG4, 254);             //Starts the Task (For Threading Purposes)
 					}
+
 //Old Tasks for Stacking Cones on the Mobile Goal
-/*					if(vexRT [Btn8LXmtr2]==1) {
+					if(vexRT [Btn8LXmtr2]==1) {
 			startTask(MG5, 254);             //Starts the Task (For Threading Purposes)
 					}
 					if(vexRT [Btn8UXmtr2]==1) {
@@ -873,11 +901,12 @@ displayNextLCDString(backupBattery);
 					}
 					if(vexRT [Btn8DXmtr2]==1) {
 			startTask(MG8, 254);             //Starts the Task (For Threading Purposes)
-					} */
+					}
 
 //New Tasks for All Mobile Cone Stacking on One Button
+/*
 					if(vexRT [Btn8LXmtr2]==1) {
-			startTask(stackSwitch, 254);             //Starts the Task (For Threading Purposes)
+			startTask(stackyBoi, 254);             //Starts the Task (For Threading Purposes)
 				}
 					if(vexRT [Btn8RXmtr2]==1) {
 			startTask(stackReset, 254);             //Starts the Task (For Threading Purposes)
@@ -889,11 +918,11 @@ displayNextLCDString(backupBattery);
 					if(vexRT [Btn8UXmtr2]==1) {
 			startTask(stopAll, 255);
 //(In Case We Decide to use the Old Code)
-/*		stopTask(MG5, 255);
+		stopTask(MG5, 255);
 			stopTask(MG6, 255);
 			stopTask(MG7, 255);
-			stopTask(MG8, 255); */
-			  }
+			stopTask(MG8, 255);
+			  }*/
 //Driver Control --- Controller 1
 		if(abs(vexRT[Ch1]) > threshold)
 			X1 = vexRT[Ch1];
