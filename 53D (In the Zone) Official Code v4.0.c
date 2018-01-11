@@ -963,7 +963,7 @@ displayNextLCDString(backupBattery);
 			{
 				VertLiftUse = false;
 
-			motor [LeftLiftUD]= 0;
+			motor [LeftLiftUD]= 0; //Stop the motots after detecting that the Btn5DXmtr2 has been pressed
 			motor [RightLiftUD]= 0;
 	}
 
