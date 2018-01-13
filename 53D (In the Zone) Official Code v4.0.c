@@ -96,7 +96,7 @@ void sensorResetDT () {
 /*---------------------------------------------------------------------------*/
 task autonomous()
 {
-if(SensorValue[AutoSelect] <= 400) //MGLb
+if(SensorValue[AutoSelect] <= 400) //MGLb 5 point
     {
  	  	sensorResetDT();
     	//close claw, start rotating
@@ -117,7 +117,7 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 			motor [FrontLeftDrive] = 0; //stops all motion
 			motor [FrontRightDrive] = 0;
 			motor [BackLeftDrive] = 0;
-			motor [BackRightDrive] = 0;			
+			motor [BackRightDrive] = 0;
 			motor [MobileLiftLeft] = 0;
 			motor [MobileLiftRight] = 0;
 			delay (10);
@@ -131,7 +131,7 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 			motor [MobileLiftRight] = 0;
 			delay (10);
 		/**	SensorValue [RightBackDrivePot] = 0;
-			SensorValue [LeftBackDrivePot] = 0;		**/	
+			SensorValue [LeftBackDrivePot] = 0;		**/
 		while (SensorValue[RightBackDrivePot] >= 240){ //backs the rotot up
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = -127;
@@ -139,9 +139,10 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 			motor [BackRightDrive] = -127;
 		}
 			stopDriveTrain();
-			motor [LiftClawRotate] = -100; //releases cone onto mobile goal 
+			motor [LiftClawRotate] = -100; //releases cone onto mobile goal
 			delay (550);
 			motor [ClawOC] = 127;
+			delay (300);
 			motor [LiftClawRotate] = 0;
 			delay (400);
 			motor [ClawOC] = 0;
@@ -157,12 +158,11 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 			motor [FrontRightDrive] = -75;
 			motor [BackRightDrive] = -75;
 		}
-			stopDriveTrain();
-			sensorResetDT ();
-		while (SensorValue[RightBackDrivePot] >= -600){ //drives backwards
 			motor [MobileLiftLeft] = 127;
 			motor [MobileLiftRight] = 127;
-			delay (400);
+			delay (500);
+			sensorResetDT ();
+		while (SensorValue[RightBackDrivePot] >= -600){ //drives backward
 			motor [LiftClawRotate] = 20;
 			motor [FrontLeftDrive] = -127;
 			motor [FrontRightDrive] = -127;
@@ -171,16 +171,16 @@ if(SensorValue[AutoSelect] <= 400) //MGLb
 		}
 		stopDriveTrain();
     }
-
-else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
-    {
+//****************RIGHT SIDE*************************
+/*
+{
 	  	sensorResetDT();
     	//close claw, start rotating
 	    motor [ClawOC] = -127;
 	    motor [LiftClawRotate] = 127;
 			delay(800);
 			//stop rotating, start driving and put out mobile lift
-			while (SensorValue[RightBackDrivePot] <= 1300){
+			while ((SensorValue[RightBackDrivePot] <= 1300)&&(SensorValue[LeftBackDrivePot] <= 1300)){
 				motor [LiftClawRotate] = 20;
 				motor [MobileLiftLeft] = 127;
 				motor [MobileLiftRight] = 127;
@@ -193,7 +193,97 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 			motor [FrontLeftDrive] = 0; //stops all motion
 			motor [FrontRightDrive] = 0;
 			motor [BackLeftDrive] = 0;
-			motor [BackRightDrive] = 0;			
+			motor [BackRightDrive] = 0;
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			delay (10);
+			//reset sensors for next portion
+			motor [ClawOC] = -127; //picks up mobile goal
+			motor [MobileLiftLeft] = -127;
+			motor [MobileLiftRight] = -127;
+			delay (1100);
+			motor [ClawOC] = -127;
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+			delay (10);
+		while ((SensorValue[RightBackDrivePot] >= 240)&&(SensorValue[LeftBackDrivePot] >= 240)){ //backs the rotot up
+			motor [FrontLeftDrive] = -86;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -86;
+			motor [BackRightDrive] = -127;
+		}
+			stopDriveTrain();
+			motor [LiftClawRotate] = -100; //releases cone onto mobile goal
+			delay (480);
+			motor [ClawOC] = 127;
+			motor [LiftClawRotate] = 127;
+			delay (480);
+			motor [ClawOC] = 0;
+			delay (420);
+			motor [LiftClawRotate] = 0;
+			delay (100);
+		while (SensorValue[RightBackDrivePot] >= -575) //starts turn
+		{
+			motor [LiftClawRotate] = 20;
+			motor [FrontLeftDrive] = 75;
+			motor [BackLeftDrive] = 75;
+			motor [FrontRightDrive] = -75;
+			motor [BackRightDrive] = -75;
+		}
+			sensorResetDT ();
+		while (SensorValue[RightBackDrivePot] <= 300){ //drives forward
+			motor [LiftClawRotate] = 20;
+			motor [FrontLeftDrive] = 44;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 44;
+			motor [BackRightDrive] = 127;
+		}
+			stopDriveTrain();
+			motor [MobileLiftLeft] = 127;
+			motor [MobileLiftRight] = 127;
+			delay (800);
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = 127;
+			delay (800);
+			stopDriveTrain();
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+		while (SensorValue[RightBackDrivePot] >= -200) //drives backwards
+			{
+			motor [LiftClawRotate] = 20;
+			motor [FrontLeftDrive] = -127;
+			motor [FrontRightDrive] = -127;
+			motor [BackLeftDrive] = -127;
+			motor [BackRightDrive] = -127;
+		}
+			motor [LiftClawRotate] = 0;
+		stopDriveTrain ();
+		}
+*/
+else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr 10 points
+    {
+	  	sensorResetDT();
+    	//close claw, start rotating
+	    motor [ClawOC] = -127;
+	    motor [LiftClawRotate] = 127;
+			delay(800);
+			//stop rotating, start driving and put out mobile lift
+			while ((SensorValue[RightBackDrivePot] <= 1300)&&(SensorValue[LeftBackDrivePot] <= 1300)){
+				motor [LiftClawRotate] = 20;
+				motor [MobileLiftLeft] = 127;
+				motor [MobileLiftRight] = 127;
+				motor [FrontLeftDrive] = 127;
+				motor [FrontRightDrive] = 127;
+				motor [BackLeftDrive] = 127;
+				motor [BackRightDrive] = 127;
+				//delay(1560);
+			}
+			motor [FrontLeftDrive] = 0; //stops all motion
+			motor [FrontRightDrive] = 0;
+			motor [BackLeftDrive] = 0;
+			motor [BackRightDrive] = 0;
 			motor [MobileLiftLeft] = 0;
 			motor [MobileLiftRight] = 0;
 			delay (10);
@@ -207,22 +297,21 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 			motor [MobileLiftRight] = 0;
 			delay (10);
 		/**	SensorValue [RightBackDrivePot] = 0;
-			SensorValue [LeftBackDrivePot] = 0;		**/	
-		while (SensorValue[RightBackDrivePot] >= 240){ //backs the rotot up
-			motor [FrontLeftDrive] = -127;
+			SensorValue [LeftBackDrivePot] = 0;		**/
+		while ((SensorValue[RightBackDrivePot] >= 240)&&(SensorValue[LeftBackDrivePot] >= 240)){ //backs the rotot up
+			motor [FrontLeftDrive] = -86;
 			motor [FrontRightDrive] = -127;
-			motor [BackLeftDrive] = -127;
+			motor [BackLeftDrive] = -86;
 			motor [BackRightDrive] = -127;
 		}
 			stopDriveTrain();
-			motor [LiftClawRotate] = -100; //releases cone onto mobile goal 
-			delay (550);
+			motor [LiftClawRotate] = -100; //releases cone onto mobile goal
+			delay (480);
 			motor [ClawOC] = 127;
-			motor [LiftClawRotate] = 0;
-			delay (400);
-			motor [ClawOC] = 0;
 			motor [LiftClawRotate] = 127;
-			delay (900);
+			delay (480);
+			motor [ClawOC] = 0;
+			delay (420);
 			motor [LiftClawRotate] = 0;
 			delay (100);
 		while (SensorValue[RightBackDrivePot] >= -575) //starts turn
@@ -233,24 +322,28 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 			motor [FrontRightDrive] = -75;
 			motor [BackRightDrive] = -75;
 		}
-			stopDriveTrain();
 			sensorResetDT ();
-		while (SensorValue[RightBackDrivePot] >= -600){ //drives backwards
-			motor [MobileLiftLeft] = 127;
-			motor [MobileLiftRight] = 127;
-			delay (400);
+		while (SensorValue[RightBackDrivePot] <= 300){ //drives forward
 			motor [LiftClawRotate] = 20;
-			motor [FrontLeftDrive] = -127;
-			motor [FrontRightDrive] = -127;
-			motor [BackLeftDrive] = -127;
-			motor [BackRightDrive] = -127;
+			motor [FrontLeftDrive] = 44;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 44;
+			motor [BackRightDrive] = 127;
 		}
-		stopDriveTrain();
-		/* TEN POINT ZONE CODE
+			stopDriveTrain();
 			motor [MobileLiftLeft] = 127;
 			motor [MobileLiftRight] = 127;
-			sensorResetDT ();
-			delay (500);
+			delay (800);
+			motor [FrontLeftDrive] = 127;
+			motor [FrontRightDrive] = 127;
+			motor [BackLeftDrive] = 127;
+			motor [BackRightDrive] = 127;
+			delay (800);
+			stopDriveTrain();
+			motor [MobileLiftLeft] = 0;
+			motor [MobileLiftRight] = 0;
+
+
 		while (SensorValue[RightBackDrivePot] >= -200) //drives backwards
 			{
 			motor [LiftClawRotate] = 20;
@@ -259,7 +352,8 @@ else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400) //MGRr
 			motor [BackLeftDrive] = -127;
 			motor [BackRightDrive] = -127;
 		}
-		stopDriveTrain ();*/
+			motor [LiftClawRotate] = 0;
+		stopDriveTrain ();
 		}
 if(SensorValue[AutoSelect] >= 1400) //SGC
 		{
