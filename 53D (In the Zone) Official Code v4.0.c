@@ -877,12 +877,12 @@ bLCDBacklight = true; //Turn on the Backlight in the LCD
 if(SensorValue[AutoSelect] <= 400)
 		{
 			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
-			displayLCDCenteredString(1, "MGLb"); //Display the Autonomous on the Top Line
+			displayLCDCenteredString(1, "MGLb5"); //Display the Autonomous on the Top Line
 		}
 else if(SensorValue[AutoSelect] > 400 && SensorValue[AutoSelect] <1400)
 		{
 			displayLCDCenteredString(0, "Autonomous:"); //Display "Autonomous:" on the Top Line
-			displayLCDCenteredString(1, "MGRr"); //Display the Autonomous on the Top Line
+			displayLCDCenteredString(1, "MGRr10"); //Display the Autonomous on the Top Line
 		}
 else if(SensorValue[AutoSelect] >= 1400 && SensorValue[AutoSelect] <2300)
 		{
