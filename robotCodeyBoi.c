@@ -161,7 +161,7 @@ task usercontrol()
 //~~~~~~~~~~~~~~~~~~Drivetrain PID~~~~~~~~~~~~~~~~~~~~~//
 
 		//front alignment check every 600 ticks, calculate error
-		if (nMotorEncoder[frontLeftDrive] || nMotorEncoder[frontRightDrive] >= 600){
+		if (abs(nMotorEncoder[frontLeftDrive]) || abs(nMotorEncoder[frontRightDrive]) >= 600){
 			error = nMotorEncoder[frontLeftDrive] - nMotorEncoder[frontRightDrive];
 			fRSpeed += error * kP;
 			imeReset();
