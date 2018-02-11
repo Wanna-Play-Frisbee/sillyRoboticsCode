@@ -143,7 +143,7 @@ task usercontrol()
 	//sensorResetDT(); <- UPDATE DIS BOI
   string mainBattery, backupBattery; //Set up Variables "mainBattery" "backupBattery"
   bLCDBacklight = true; //Turn on the Backlight in the LCD
-	int X1 = 0, X2 = 0, Y1 = 0, Y2 = 0, threshold = 5; //Set Integer Variables
+	int X1 = 0, Y2 = 0, threshold = 25; //Set Integer Variables
 	while (1==1)
 	{
 		clearLCDLine(0); //Clears the Top Sectio
@@ -179,11 +179,11 @@ task usercontrol()
 			X1 = 0;
 		}
 		//if left joystick up || down
-		if(abs(vexRT[Ch3]) > threshold)
+		if(abs(vexRT[Ch3]) > threshold){
 			Y2 = vexRT[Ch3];
-		else
+		}else{
 			Y2 = 0;
-		//drive the bois
+		}//drive the bois
 		motor[frontLeftDrive] = Y2;
 		motor[frontRightDrive] = X1 * fRSpeed;
 		motor[backLeftDrive] = Y2;
@@ -215,7 +215,7 @@ task usercontrol()
 		}
 		else if(vexRT [Btn5DXmtr2]==1) {
 			coneIntakeVal = 2;
-	    motor[coneIntake] = -127;
+	    		motor[coneIntake] = -127;
 		}
 		else if(coneIntakeVal == 1 || 2){
 			coneIntakeVal = 0;
@@ -229,6 +229,7 @@ task usercontrol()
 		}
 		else{
 			drFrBrBaseVal = 0;
+			motor[drFrBrBase] = 0;
 		}
 
 		//Top bois
