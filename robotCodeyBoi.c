@@ -1,19 +1,22 @@
-#pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
-#pragma config(Sensor, dgtl1,  numberOne,      sensorQuadEncoder)
-#pragma config(Sensor, dgtl3,  numberTwo,      sensorQuadEncoder)
+#pragma config(I2C_Usage, I2C1, i2cSensors)
+#pragma config(Sensor, in1,    gyro,           sensorGyro)
+#pragma config(Sensor, dgtl1,  dr4bLeft,       sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  dr4bRight,      sensorQuadEncoder)
 #pragma config(Sensor, dgtl5,  mobileTouchTouch, sensorTouch)
+#pragma config(Sensor, dgtl6,  leftMogo,       sensorQuadEncoder)
+#pragma config(Sensor, dgtl8,  rightMogo,      sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_4,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Motor,  port1,           mobileBoiBaseR, tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           drFrBrBase,    tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port3,           coneIntake,    tmotorNone, openLoop)
-#pragma config(Motor,  port4,           frontLeftDrive, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_1)
-#pragma config(Motor,  port5,           frontRightDrive, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_4)
-#pragma config(Motor,  port6,           backLeftDrive, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_2)
-#pragma config(Motor,  port7,           backRightDrive, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_3)
+#pragma config(Motor,  port3,           drFrBrBase2,   tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port4,           frontLeftDrive, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_4)
+#pragma config(Motor,  port5,           frontRightDrive, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_1)
+#pragma config(Motor,  port6,           backLeftDrive, tmotorVex393_MC29, openLoop, driveLeft, encoderPort, I2C_3)
+#pragma config(Motor,  port7,           backRightDrive, tmotorVex393_MC29, openLoop, driveRight, encoderPort, I2C_2)
 #pragma config(Motor,  port8,           rightTop,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port9,           leftTop,       tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          mobileBoiBaseL, tmotorVex393_HBridge, openLoop)
@@ -47,13 +50,37 @@ const short rightButton = 4;
 /*---------------------------------------------------------------------------*/
 void pre_auton()
 {
-
 	bStopTasksBetweenModes = true;
 }
+//declare auton variables
+int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
+int autonomousIMEtotalFL = 0, autonomousIMEtotalBL = 0, autonomousIMEtotalFR = 0, autonomousIMEtotalBR = 0;
 //declaration of drive values: 0 is stopped, 1 is driving forward, 2 is driving backwards
 int lcdyeeMode = 0, leftDrive = 0, rightDrive = 0, mogoLift = 0, drFrBrBaseVal = 0, drFrBrTop = 0, coneIntakeVal = 0;
 //declaration of numerical operands for functions and IMEs
 float kP = .2, fRSpeed = 124., fLSpeed = 124., rMod = 0., error = 0.;
+
+//~~~~~~~sensor functions~~~~~~~\\
+void potentiomReset() {
+	//SensorValue[leftBackDrivePot] = 0;
+	//SensorValue[rightBackDrivePot] = 0;
+}
+void imeReset(){
+  nMotorEncoder[frontLeftDrive] = 0;
+  nMotorEncoder[frontRightDrive] = 0;
+  nMotorEncoder[backLeftDrive] = 0;
+  nMotorEncoder[backRightDrive] = 0;
+}
+void autonAddition(){
+	autonomousIMEtotalFL += nMotorEncoder[frontLeftDrive];
+	autonomousIMEtotalFR += nMotorEncoder[frontRightDrive];
+	autonomousIMEtotalBL += nMotorEncoder[backLeftDrive];
+	autonomousIMEtotalBR += nMotorEncoder[backRightDrive];
+	imeReset();
+}
+void resetGyro(){
+	SensorValue[gyro] = 0;
+}
 
 //~~~~~~~~~~~LCD_functions~~~~~~~~~~~~\\
 void clearLCD(){
@@ -81,7 +108,14 @@ task lcdSet(){
 				wait1Msec(10);
 			}
 		}
-		if (lcdyeeMode > 3 || lcdyeeMode < 1){
+		/*if (nLCDButtons == 2){
+			lcdyeeMode = 4;
+			while(nLCDButtons == 4)
+			{
+				wait1Msec(10);
+			}
+		}*/
+		if (lcdyeeMode > 4 || lcdyeeMode < 1){
 			lcdyeeMode = 1;
 		}
 	}
@@ -90,34 +124,49 @@ task lcdSet(){
 task menuSwitch(){
 	while (True){
 		wait1Msec(10);
-		switch(lcdyeeMode){
-			case(1):
+		if (lcdyeeMode == 1){
 					clearLCD();
 					displayLCDCenteredString(0, "Auton 1");
 					displayLCDCenteredString(1, "the only 1");
-			case(2):
+		}else if (lcdyeeMode == 2){
 					clearLCD();
 					displayLCDCenteredString(0, "Auton 2");
 					displayLCDCenteredString(1, "Inexistent");
-			case(3):
+		}else if (lcdyeeMode == 3){
 					clearLCD();
 					displayLCDCenteredString(0, "Auton 3");
 					displayLCDCenteredString(1, "just reeee");
-		}
+		}/*else if (lcdyeeMode == 4){
+				clearLCD();
+				displayLCDCenteredString(0, "The imes...");
+				displayLCDCenteredString(1, "reset");
+				imeReset();
+		}*/
 	}
 }
 
 
 //~~~~~~~auton driving functions~~~~~~~\\
-		//declare necessary variables
-		int rightAutonSpeed = 125;	int leftAutonSpeed = 125; int	autonomousIMEtotalFR = 0, autonomousIMEtotalFL = 0;
-
 void driveForward (int rSpeed, int tdelay){
 	motor [frontLeftDrive] = 127;
 	motor [frontRightDrive] = rSpeed;
 	motor [backLeftDrive] = 127;
 	motor [backRightDrive] = rSpeed;
 	delay(tdelay); leftDrive = 1; rightDrive = 1;
+}
+void rightSpin (int mPower, int tdelay){
+	motor [frontLeftDrive] = mPower;
+	motor [frontRightDrive] = -mPower;
+	motor [backLeftDrive] = mPower;
+	motor [backRightDrive] = -mPower;
+	delay(tdelay); leftDrive = 1; rightDrive = 2;
+}
+void leftSpin (int mPower, int tdelay){
+	motor [frontLeftDrive] = -mPower;
+	motor [frontRightDrive] = mPower;
+	motor [backLeftDrive] = -mPower;
+	motor [backRightDrive] = mPower;
+	delay(tdelay); leftDrive = 2; rightDrive = 1;
 }
 void driveTrainLeft(int mPower, int tdelay){
 	motor[frontLeftDrive] = mPower;
@@ -169,21 +218,6 @@ void driveDosBouysAuton(string motot1, string motot2, int driveType, int tdelay,
 	delay(tdelay);
 }
 
-//~~~~~~~sensor functions~~~~~~~\\
-void potentiomReset() {
-	//SensorValue[leftBackDrivePot] = 0;
-	//SensorValue[rightBackDrivePot] = 0;
-}
-void imeReset(){
-  nMotorEncoder[frontLeftDrive] = 0;
-  nMotorEncoder[frontRightDrive] = 0;
-  nMotorEncoder[backLeftDrive] = 0;
-  nMotorEncoder[backRightDrive] = 0;
-}
-void autonAddition(){
-	autonomousIMEtotalFL += nMotorEncoder[frontLeftDrive];
-	autonomousIMEtotalFR += nMotorEncoder[frontRightDrive];
-}
 //~~~~~~~~~~LCD_Setup~~~~~~~~~~~\\
 
 
@@ -199,18 +233,25 @@ void autonAddition(){
 /*---------------------------------------------------------------------------*/
 task autonomous()
 {
-	//open mobile lift and   d r i v e   a tiny bit
-	mobileDrive(127, 1150);
-	driveForward(rightAutonSpeed, 200);
-	mobileDrive(0, 100);
+	//notes
+	//takes ~554 ticks per wheel to cross a tile
+	//left side IEMs appear negative, right positive; just use abs
+	//takes ~584 ticks for the mogo lift to fully extend
 
-	//   d a n i e l    s t o p    i t
-	stopDriveTrain(); autonAddition();
+	//initial setup
+	imeReset();
+
+	//open mobile lift and   d r i v e   a tiny bit
+	while ((abs(nMotorEncoder[frontLeftDrive])<=500 || abs(nMotorEncoder[frontRightDrive])) <= 500){
+		driveForward(127,10);
+		//mobileDrive(127, 1150);
+	}//   d a n i e l    s t o p    i t
+	stopDriveTrain(); mobileDrive(0, 100); autonAddition();
 
 	//spinnnnnnn
-	while (nMotorEncoder(frontLeftDrive) < 300){
-		driveTrainLeft(127, 0);
-	} autonAddition(); imeReset();
+	while ((nMotorEncoder[backLeftDrive]) && (nMotorEncoder[backRightDrive]) <= -200){
+		rightSpin(127,0);
+	}stopDriveTrain(); autonAddition();
 
 	while (SensorValue[mobileTouchTouch] != 1) {
 		if (abs(nMotorEncoder[frontLeftDrive]) || abs(nMotorEncoder[frontRightDrive]) >= 600){
@@ -219,14 +260,14 @@ task autonomous()
 			driveForward(rightAutonSpeed, 200);
 		}
 	}
+
 	//when touchy, do:
-	stopDTyMobi();
-	imeReset();
+	stopDTyMobi(); autonAddition();
 
 	//pull in mobile boi
 	mobileDrive(-127, 1250);
 
-	while (SensorValue[frontLeftDrive] && SensorValue[frontRightDrive] < 600){
+	while (SensorValue[backLeftDrive] && SensorValue[frontRightDrive] < 600){
 		driveBackwards(rightAutonSpeed, 0);
 	}
 }
@@ -256,8 +297,10 @@ task usercontrol()
 {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~LCD_FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+	/*SensorValue[gyro] = 0;
+	SensorFullCount[gyro] = 3600;*/
 
-	imeReset()
+	imeReset();
 	int X1 = 0, Y2 = 0, threshold = 25; //Set Integer Variables
 
 	clearLCD();
@@ -320,26 +363,31 @@ task usercontrol()
 			motor [mobileBoiBaseR] = 0;
 		}
 
+		//temporary ime reset
+		if(vexRT[Btn7U] == 1){
+			imeReset();
+		}
+
 //~~~~~~~~~~~~~~~~~~~~~~driver_2~~~~~~~~~~~~~~~~~~~~~~~//
 
 		//Cone intake control
 		if(vexRT [Btn5UXmtr2]==1){
 			coneIntakeVal = 1;
-			motor[coneIntake] = 127;
+			//motor[coneIntake] = 127;
 		}
 		else if(vexRT [Btn5DXmtr2]==1) {
 			coneIntakeVal = 2;
-	    		motor[coneIntake] = -127;
+	    //		motor[coneIntake] = -127;
 		}
 		else if(coneIntakeVal == 1 || 2){
 			coneIntakeVal = 0;
-			motor[coneIntake] = 0;
+			//motor[coneIntake] = 0;
 		}
 
 		//Drive fourbar base (motors y'd)
 		if(abs(vexRT[Ch2Xmtr2]) > threshold){
 			if (vexRT[Ch2Xmtr2] > 0){ drFrBrBaseVal = 1; }else{ drFrBrBaseVal = 2; }
-			motor[drFrBrBase] = vexRT[Ch2Xmtr2];
+			motor[drFrBrBase] = vexRT[Ch2Xmtr2]; motor[drFrBrBase2] = vexRT[Ch2Xmtr2];
 		}
 		else{
 			drFrBrBaseVal = 0;
