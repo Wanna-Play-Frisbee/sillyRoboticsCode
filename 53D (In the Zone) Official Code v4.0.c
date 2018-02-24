@@ -5,7 +5,9 @@
 #pragma config(Sensor, dgtl3,  dr4bRight,      sensorQuadEncoder)
 #pragma config(Sensor, dgtl5,  mobileTouchTouch, sensorTouch)
 #pragma config(Sensor, dgtl6,  leftMogo,       sensorQuadEncoder)
-#pragma config(Sensor, dgtl8,  rightMogo,      sensorQuadEncoder)
+#pragma config(Sensor, dgtl8,  rightMogo,      sensorNone)
+#pragma config(Sensor, dgtl9,  backleftpot,    sensorQuadEncoder)
+#pragma config(Sensor, dgtl11, backrightpot,   sensorQuadEncoder)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_3,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -51,6 +53,12 @@ const short rightButton = 4;
 void pre_auton()
 {
 	bStopTasksBetweenModes = true;
+}
+void sensorResetDT () {
+	SensorValue[backleftpot] = 0;
+	SensorValue[backRightpot] = 0;
+	SensorValue[leftMogo] = 0;
+
 }
 //declare auton variables
 int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
@@ -218,6 +226,36 @@ void driveDosBouysAuton(string motot1, string motot2, int driveType, int tdelay,
 	delay(tdelay);
 }
 
+int inchtoTicksTorque(float inches)
+{
+	int ticks;
+	ticks = inches * 99.82;
+	return ticks;
+}
+
+void moveDT(float distance, int speed)
+{
+	setLCDPosition(0, 0);
+	displayNextLCDNumber(SensorValue[frontRightDrive]);
+	setLCDPosition(1,0);
+	displayNextLCDNumber(SensorValue[frontLeftDrive]);
+	resetMotorEncoder(frontLeftDrive);
+	resetMotorEncoder(frontRightDrive);
+	SensorValue[frontLeftDrive] = -1000;
+	SensorValue[frontRightDrive] = 1000;
+	while (inchtoTicksTorque(abs(SensorValue[frontRightDrive]) < distance + 300|| abs(SensorValue[frontLeftDrive]) < distance + 300))
+	{
+		motor[frontLeftDrive] = speed;
+		motor[frontRightDrive] = speed;
+		motor[backLeftDrive] = speed;
+		motor[backRightDrive] = speed;
+	}
+		motor[frontLeftDrive] = 0;
+		motor[frontRightDrive] = 0;
+		motor[backLeftDrive] = 0;
+		motor[backRightDrive] = 0;
+}
+
 //~~~~~~~~~~LCD_Setup~~~~~~~~~~~\\
 
 
@@ -239,7 +277,8 @@ task autonomous()
 	//takes ~584 ticks for the mogo lift to fully extend
 
 	//initial setup
-	imeReset();
+/*	imeReset();
+
 
 	//open mobile lift and   d r i v e   a tiny bit
 	while ((abs(nMotorEncoder[frontLeftDrive])<=500 || abs(nMotorEncoder[frontRightDrive])) <= 500){
@@ -269,7 +308,87 @@ task autonomous()
 
 	while (SensorValue[backLeftDrive] && SensorValue[frontRightDrive] < 600){
 		driveBackwards(rightAutonSpeed, 0);
-	}
+	} */
+sensorResetDT ();
+					while (SensorValue[leftMogo] >=-500) {
+	motor[mobileBoiBaseL]=-127;
+	motor[mobileBoiBaseR]=-127;
+		}
+	motor[mobileBoiBaseL]=0;
+	motor[mobileBoiBaseR]=0;
+		delay(10);
+				while (SensorValue[backrightpot] <= 1300){
+	motor[backLeftDrive]=127;
+	motor[backRightDrive]=127;
+	motor[frontLeftDrive]=127;
+	motor[frontRightDrive]=127;
+			}
+			stopDriveTrain();
+	motor[mobileBoiBaseL]=0;
+	motor[mobileBoiBaseR]=0;
+		delay(10);
+					while (SensorValue[leftMogo] <=0) {
+	motor[mobileBoiBaseL]=127;
+	motor[mobileBoiBaseR]=127;
+		}
+	motor[mobileBoiBaseL]=0;
+	motor[mobileBoiBaseR]=0;
+		delay(10);
+				while (SensorValue[backrightpot] >= 50){
+	motor[backLeftDrive]=-127;
+	motor[backRightDrive]=-127;
+	motor[frontLeftDrive]=-127;
+	motor[frontRightDrive]=-127;
+			}
+		stopDriveTrain();
+		delay(10);
+						while (SensorValue[backrightpot] <= 780){
+	motor[backLeftDrive]=-127;
+	motor[backRightDrive]=127;
+	motor[frontLeftDrive]=-127;
+	motor[frontRightDrive]=127;
+			}
+	stopDriveTrain();
+		delay(10);
+						while (SensorValue[backrightpot] <= 950){
+	motor[backLeftDrive]=120;
+	motor[backRightDrive]=120;
+	motor[frontLeftDrive]=120;
+	motor[frontRightDrive]=120;
+			}
+		stopDriveTrain();
+		delay(10);
+							while (SensorValue[leftMogo] >=-500) {
+	motor[mobileBoiBaseL]=-127;
+	motor[mobileBoiBaseR]=-127;
+		}
+	motor[mobileBoiBaseL]=0;
+	motor[mobileBoiBaseR]=0;
+		delay(10);
+								while (SensorValue[backrightpot] <= 0){
+	motor[backLeftDrive]=-127;
+	motor[backRightDrive]=127;
+	motor[frontLeftDrive]=-127;
+	motor[frontRightDrive]=127;
+			}
+	stopDriveTrain();
+		delay(10);
+
+/*					while (SensorValue[leftMogo] >=-450) {
+	motor[mobileBoiBaseL]=-127;
+	motor[mobileBoiBaseR]=-127;
+		}
+		stopDTyMobi();
+		delay(10);
+						while (SensorValue[backrightpot] >= 0){
+	motor[backLeftDrive]=-127;
+	motor[backRightDrive]=-127;
+	motor[frontLeftDrive]=-127;
+	motor[frontRightDrive]=-127;
+			}
+		stopDriveTrain();
+		delay(10);
+		*/
 }
 
 /*---------------------------------------------------------------------------*/
