@@ -271,44 +271,6 @@ void moveDT(float distance, int speed)
 /*---------------------------------------------------------------------------*/
 task autonomous()
 {
-	//notes
-	//takes ~554 ticks per wheel to cross a tile
-	//left side IEMs appear negative, right positive; just use abs
-	//takes ~584 ticks for the mogo lift to fully extend
-
-	//initial setup
-/*	imeReset();
-
-
-	//open mobile lift and   d r i v e   a tiny bit
-	while ((abs(nMotorEncoder[frontLeftDrive])<=500 || abs(nMotorEncoder[frontRightDrive])) <= 500){
-		driveForward(127,10);
-		//mobileDrive(127, 1150);
-	}//   d a n i e l    s t o p    i t
-	stopDriveTrain(); mobileDrive(0, 100); autonAddition();
-
-	//spinnnnnnn
-	while ((nMotorEncoder[backLeftDrive]) && (nMotorEncoder[backRightDrive]) <= -200){
-		rightSpin(127,0);
-	}stopDriveTrain(); autonAddition();
-
-	while (SensorValue[mobileTouchTouch] != 1) {
-		if (abs(nMotorEncoder[frontLeftDrive]) || abs(nMotorEncoder[frontRightDrive]) >= 600){
-			error = nMotorEncoder[frontLeftDrive] - nMotorEncoder[frontRightDrive]; autonAddition();
-			rightAutonSpeed += error * kP; imeReset();
-			driveForward(rightAutonSpeed, 200);
-		}
-	}
-
-	//when touchy, do:
-	stopDTyMobi(); autonAddition();
-
-	//pull in mobile boi
-	mobileDrive(-127, 1250);
-
-	while (SensorValue[backLeftDrive] && SensorValue[frontRightDrive] < 600){
-		driveBackwards(rightAutonSpeed, 0);
-	} */
 sensorResetDT ();
 					while (SensorValue[leftMogo] >=-500) {
 	motor[mobileBoiBaseL]=-127;
@@ -373,22 +335,6 @@ sensorResetDT ();
 			}
 	stopDriveTrain();
 		delay(10);
-
-/*					while (SensorValue[leftMogo] >=-450) {
-	motor[mobileBoiBaseL]=-127;
-	motor[mobileBoiBaseR]=-127;
-		}
-		stopDTyMobi();
-		delay(10);
-						while (SensorValue[backrightpot] >= 0){
-	motor[backLeftDrive]=-127;
-	motor[backRightDrive]=-127;
-	motor[frontLeftDrive]=-127;
-	motor[frontRightDrive]=-127;
-			}
-		stopDriveTrain();
-		delay(10);
-		*/
 }
 
 /*---------------------------------------------------------------------------*/
