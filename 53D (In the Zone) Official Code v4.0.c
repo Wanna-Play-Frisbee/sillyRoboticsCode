@@ -28,6 +28,15 @@ const short leftButton = 1;
 const short centerButton = 2;
 const short rightButton = 4;
 
+
+//declare auton variables
+int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
+int autonomousIMEtotalFL = 0, autonomousIMEtotalBL = 0, autonomousIMEtotalFR = 0, autonomousIMEtotalBR = 0;
+//declaration of drive values: 0 is stopped, 1 is driving forward, 2 is driving backwards
+int lcdyeeMode = 0, leftDrive = 0, rightDrive = 0, mogoLift = 0, drFrBrBaseVal = 0, drFrBrTop = 0, coneIntakeVal = 0;
+//declaration of numerical operands for functions and IMEs
+float kP = .2, fRSpeed = 124., fLSpeed = 124., rMod = 0., error = 0.;
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*        Description: Competition template for VEX EDR                      */
@@ -118,14 +127,6 @@ void pre_auton()
 	startTask( menuSwitch );
 	//bStopTasksBetweenModes = true;
 }
-
-//declare auton variables
-int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
-int autonomousIMEtotalFL = 0, autonomousIMEtotalBL = 0, autonomousIMEtotalFR = 0, autonomousIMEtotalBR = 0;
-//declaration of drive values: 0 is stopped, 1 is driving forward, 2 is driving backwards
-int lcdyeeMode = 0, leftDrive = 0, rightDrive = 0, mogoLift = 0, drFrBrBaseVal = 0, drFrBrTop = 0, coneIntakeVal = 0;
-//declaration of numerical operands for functions and IMEs
-float kP = .2, fRSpeed = 124., fLSpeed = 124., rMod = 0., error = 0.;
 
 //~~~~~~~sensor functions~~~~~~~\\
 void sensorResetDT () {
