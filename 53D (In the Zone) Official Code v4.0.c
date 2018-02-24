@@ -111,7 +111,7 @@ task menuSwitch(){
 		}*/
 	}
 }
-
+//~~~~~~~~~PRE AUTON TASKS~~~~~~~~~~\\
 void pre_auton()
 {
 	startTask( lcdSet );
@@ -257,10 +257,6 @@ void moveDT(float distance, int speed)
 		motor[backRightDrive] = 0;
 }
 
-//~~~~~~~~~~LCD_Setup~~~~~~~~~~~\\
-
-
-
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              Autonomous Task                              */
@@ -368,8 +364,6 @@ sensorResetDT ();
 /*---------------------------------------------------------------------------*/
 task usercontrol()
 {
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~LCD_FUNCTIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 	/*SensorValue[gyro] = 0;
 	SensorFullCount[gyro] = 3600;*/
 
