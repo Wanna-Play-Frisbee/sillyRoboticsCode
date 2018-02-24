@@ -93,12 +93,12 @@ task menuSwitch(){
 		wait1Msec(10);
 		if (lcdyeeMode == 1){
 					clearLCD();
-					displayLCDCenteredString(0, "Auton 1");
-					displayLCDCenteredString(1, "the only 1");
+					displayLCDCenteredString(0, "Long Side");
+					displayLCDCenteredString(1, "Press");
 		}else if (lcdyeeMode == 2){
 					clearLCD();
-					displayLCDCenteredString(0, "Auton 2");
-					displayLCDCenteredString(1, "Inexistent");
+					displayLCDCenteredString(0, "Defense");
+					displayLCDCenteredString(1, "Press");
 		}else if (lcdyeeMode == 3){
 					clearLCD();
 					displayLCDCenteredString(0, "Auton 3");
