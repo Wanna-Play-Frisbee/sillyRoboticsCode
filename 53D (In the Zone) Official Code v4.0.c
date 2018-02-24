@@ -312,7 +312,8 @@ sensorResetDT ();
 			}
 	stopDriveTrain();
 		delay(10);
-						while (SensorValue[backrightpot] <= 950){
+		sensorResetDT();
+						while (SensorValue[backrightpot] <= 100){
 	motor[backLeftDrive]=120;
 	motor[backRightDrive]=120;
 	motor[frontLeftDrive]=120;
