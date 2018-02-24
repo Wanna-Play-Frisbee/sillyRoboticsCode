@@ -371,8 +371,9 @@ task usercontrol()
 	int X1 = 0, Y2 = 0, threshold = 25; //Set Integer Variables
 
 	clearLCD();
-	startTask( lcdSet );
-	startTask( menuSwitch );
+	/*startTask( lcdSet ); BSTOPTASKSBETWEENMODES HAS BEEN COMMENTED OUT, THEY ARE ALREADY
+	STARTED IN PREAUTON AND SHOULDNT STOP BUT MIGHT
+	startTask( menuSwitch );*/ 
 
 	while (1==1)
 	{
