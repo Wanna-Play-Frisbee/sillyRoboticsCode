@@ -103,11 +103,11 @@ task menuSwitch(){
 		if (lcdyeeMode == 1){
 					clearLCD();
 					displayLCDCenteredString(0, "Long Side");
-					displayLCDCenteredString(1, "Press");
+					displayLCDCenteredString(1, "Red Side");
 		}else if (lcdyeeMode == 2){
 					clearLCD();
 					displayLCDCenteredString(0, "Defense");
-					displayLCDCenteredString(1, "Press");
+					displayLCDCenteredString(1, "No Boi");
 		}else if (lcdyeeMode == 3){
 					clearLCD();
 					displayLCDCenteredString(0, "Auton 3");
@@ -334,7 +334,15 @@ sensorResetDT ();
 			}
 	stopDriveTrain();
 		delay(10);
-}else if (lcdyeeMode == 2){//runs auton 2, the electronic bugaloo
+}else if (lcdyeeMode == 2){
+					while (SensorValue[backrightpot] <= 10000){
+	motor[backLeftDrive]=127;
+	motor[backRightDrive]=127;
+	motor[frontLeftDrive]=127;
+	motor[frontRightDrive]=127;
+			}
+			stopDriveTrain();
+//runs auton 2, the electronic bugaloo
 	
 }else if (lcdyeeMode == 3){//autony boi 3, the disco tech digeridee
 	
