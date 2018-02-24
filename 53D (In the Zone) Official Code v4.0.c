@@ -50,52 +50,11 @@ const short rightButton = 4;
 /*  function is only called once after the cortex has been powered on and    */
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
-void pre_auton()
-{
-	bStopTasksBetweenModes = true;
-}
-void sensorResetDT () {
-	SensorValue[backleftpot] = 0;
-	SensorValue[backRightpot] = 0;
-	SensorValue[leftMogo] = 0;
-
-}
-//declare auton variables
-int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
-int autonomousIMEtotalFL = 0, autonomousIMEtotalBL = 0, autonomousIMEtotalFR = 0, autonomousIMEtotalBR = 0;
-//declaration of drive values: 0 is stopped, 1 is driving forward, 2 is driving backwards
-int lcdyeeMode = 0, leftDrive = 0, rightDrive = 0, mogoLift = 0, drFrBrBaseVal = 0, drFrBrTop = 0, coneIntakeVal = 0;
-//declaration of numerical operands for functions and IMEs
-float kP = .2, fRSpeed = 124., fLSpeed = 124., rMod = 0., error = 0.;
-
-//~~~~~~~sensor functions~~~~~~~\\
-void potentiomReset() {
-	//SensorValue[leftBackDrivePot] = 0;
-	//SensorValue[rightBackDrivePot] = 0;
-}
-void imeReset(){
-  nMotorEncoder[frontLeftDrive] = 0;
-  nMotorEncoder[frontRightDrive] = 0;
-  nMotorEncoder[backLeftDrive] = 0;
-  nMotorEncoder[backRightDrive] = 0;
-}
-void autonAddition(){
-	autonomousIMEtotalFL += nMotorEncoder[frontLeftDrive];
-	autonomousIMEtotalFR += nMotorEncoder[frontRightDrive];
-	autonomousIMEtotalBL += nMotorEncoder[backLeftDrive];
-	autonomousIMEtotalBR += nMotorEncoder[backRightDrive];
-	imeReset();
-}
-void resetGyro(){
-	SensorValue[gyro] = 0;
-}
-
 //~~~~~~~~~~~LCD_functions~~~~~~~~~~~~\\
 void clearLCD(){
 	clearLCDLine(0);
 	clearLCDLine(1);
 }
-
 task lcdSet(){
 	bLCDBacklight = true;
 	clearLCD();
@@ -153,6 +112,48 @@ task menuSwitch(){
 	}
 }
 
+void pre_auton()
+{
+	startTask( lcdSet );
+	startTask( menuSwitch );
+	//bStopTasksBetweenModes = true;
+}
+
+//declare auton variables
+int rightAutonSpeed = 125;	int leftAutonSpeed = 125;
+int autonomousIMEtotalFL = 0, autonomousIMEtotalBL = 0, autonomousIMEtotalFR = 0, autonomousIMEtotalBR = 0;
+//declaration of drive values: 0 is stopped, 1 is driving forward, 2 is driving backwards
+int lcdyeeMode = 0, leftDrive = 0, rightDrive = 0, mogoLift = 0, drFrBrBaseVal = 0, drFrBrTop = 0, coneIntakeVal = 0;
+//declaration of numerical operands for functions and IMEs
+float kP = .2, fRSpeed = 124., fLSpeed = 124., rMod = 0., error = 0.;
+
+//~~~~~~~sensor functions~~~~~~~\\
+void sensorResetDT () {
+	SensorValue[backleftpot] = 0;
+	SensorValue[backRightpot] = 0;
+	SensorValue[leftMogo] = 0;
+
+}
+void potentiomReset() {
+	//SensorValue[leftBackDrivePot] = 0;
+	//SensorValue[rightBackDrivePot] = 0;
+}
+void imeReset(){
+  nMotorEncoder[frontLeftDrive] = 0;
+  nMotorEncoder[frontRightDrive] = 0;
+  nMotorEncoder[backLeftDrive] = 0;
+  nMotorEncoder[backRightDrive] = 0;
+}
+void autonAddition(){
+	autonomousIMEtotalFL += nMotorEncoder[frontLeftDrive];
+	autonomousIMEtotalFR += nMotorEncoder[frontRightDrive];
+	autonomousIMEtotalBL += nMotorEncoder[backLeftDrive];
+	autonomousIMEtotalBR += nMotorEncoder[backRightDrive];
+	imeReset();
+}
+void resetGyro(){
+	SensorValue[gyro] = 0;
+}
 
 //~~~~~~~auton driving functions~~~~~~~\\
 void driveForward (int rSpeed, int tdelay){
@@ -271,6 +272,7 @@ void moveDT(float distance, int speed)
 /*---------------------------------------------------------------------------*/
 task autonomous()
 {
+if (lcdyeeMode == 1){ //runs default auton
 sensorResetDT ();
 					while (SensorValue[leftMogo] >=-500) {
 	motor[mobileBoiBaseL]=-127;
@@ -312,8 +314,7 @@ sensorResetDT ();
 			}
 	stopDriveTrain();
 		delay(10);
-		sensorResetDT();
-						while (SensorValue[backrightpot] <= 100){
+						while (SensorValue[backrightpot] <= 950){
 	motor[backLeftDrive]=120;
 	motor[backRightDrive]=120;
 	motor[frontLeftDrive]=120;
@@ -336,7 +337,13 @@ sensorResetDT ();
 			}
 	stopDriveTrain();
 		delay(10);
+}else if (lcdyeeMode == 2){//runs auton 2, the electronic bugaloo
+	
+}else if (lcdyeeMode == 3){//autony boi 3, the disco tech digeridee
+	
 }
+}
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
